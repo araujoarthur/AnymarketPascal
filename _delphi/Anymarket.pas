@@ -14,6 +14,8 @@ type
   TRequestMethods = (rmGET, rmPOST, rmPUT, rmDELETE);
 
   TAnymarket = class
+  private const
+    URL_BASE = 'http://sandbox-api.anymarket.com.br/v2';
   private
     FGumga: string;
     function MakeRequest(ARequestMethod: TRequestMethods; AURL: String; ABody: TJSONObject = nil): TJSONObject;
@@ -22,6 +24,19 @@ type
     function MakeGet(AURL: String; AParams: TRequestParams): TJSONObject; // In the future it'll be made protected
     function MakePut(AURL: String; ABody: TJSONObject): TJSONObject;  // In the future it'll be made protected
 
+     { All the handlers currently return the raw body of the JSON response. In a future they will be filtered for errors and return proper types (boolean, string, integer, whatever is needed)}
+
+    // ### Category Handlers ###
+
+    // Creates a category with or without a related partnerId
+    function CriarCategoria(AName: String; APriceFactor: Integer; ADefinitionPriceScope: TDefinitionPriceScope; APartnerID: Integer = -1): TJSONObject;
+    // Creates a subcategory with or without a related partnerId, mostly boilerplate code from CriarCategoria, used only to allow separation between category and subcategory creation
+    function CriarSubcategoria(AName: String; APriceFactor: Integer; ADefinitionPriceScope: TDefinitionPriceScope; AParentID: Integer; APartnerID: Integer = -1): TJSONObject;
+
+    // ### Brand Handlers ###
+
+    // Creates a brand and return the json from the request.
+    function CriarMarca(AName: String; AReducedName: String; APartnerID: Integer = -1): TJSONObject;
     constructor Create(AGumga: String);
   end;
 
@@ -35,6 +50,81 @@ uses
 constructor TAnymarket.Create(AGumga: String);
 begin
   FGumga := AGumga;
+end;
+
+function TAnymarket.CriarCategoria(AName: String; APriceFactor: Integer;
+  ADefinitionPriceScope: TDefinitionPriceScope;
+  APartnerID: Integer): TJSONObject;
+var
+  Body: TJSONObject;
+begin
+  Body := TJSONObject.Create();
+  try
+    Body.AddPair('name', TJSONString.Create(AName));
+    Body.AddPair('priceFactor', TJSONNumber.Create(APriceFactor));
+    Body.AddPair('definitionPriceScope', TJSONString.Create(MapDPS(ADefinitionPriceScope)));
+    if APartnerID >= 0 then
+    begin
+      Body.AddPair('partnerId', TJSONString.Create(IntToStr(APartnerID)));
+    end;
+
+    Result := MakePost(URL_BASE + '/categories', Body);
+  finally
+    Body.Free;
+  end;
+
+end;
+
+function TAnymarket.CriarMarca(AName, AReducedName: String;
+  APartnerID: Integer): TJSONObject;
+var
+  Body: TJSONObject;
+begin
+  Body := TJSONObject.Create;
+  try
+    Body.AddPair('name', TJSONString.Create(AName));
+    Body.AddPair('reducedName', TJSONString.Create(AReducedName));
+
+    if APartnerID >= 0 then
+    begin
+      Body.AddPair('partnerId', IntToStr(APartnerID));
+    end;
+
+    Result := MakePost(URL_BASE + '/brands', Body);
+  finally
+    Body.Free;
+  end;
+
+end;
+
+// boilerplate function to allow separation of category/subcategory creation.
+function TAnymarket.CriarSubcategoria(AName: String; APriceFactor: Integer;
+  ADefinitionPriceScope: TDefinitionPriceScope; AParentID,
+  APartnerID: Integer): TJSONObject;
+var
+  Body: TJSONObject;
+  Parent: TJSONObject;
+begin
+  Body := TJSONObject.Create();
+  Parent := TJSONObject.Create();
+  try
+    Body.AddPair('name', TJSONString.Create(AName));
+    Body.AddPair('priceFactor', TJSONNumber.Create(APriceFactor));
+    Body.AddPair('definitionPriceScope', TJSONString.Create(MapDPS(ADefinitionPriceScope)));
+
+    Parent.AddPair('id', AParentID);
+    Body.AddPair('parent', Parent);
+
+    if APartnerID >= 0 then
+    begin
+      Body.AddPair('partnerId', TJSONString.Create(IntToStr(APartnerID)));
+    end;
+
+    Result := MakePost(URL_BASE + '/categories', Body);
+  finally
+    Parent.Free;
+    Body.Free;
+  end;
 end;
 
 function TAnymarket.MakeGet(AURL: String;  AParams: TRequestParams): TJSONObject;

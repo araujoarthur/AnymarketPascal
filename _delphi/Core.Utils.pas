@@ -8,6 +8,8 @@ uses
   System.DateUtils;
 
 type
+  TDefinitionPriceScope = (dpsSKU, dpsSKU_MARKETPLACE, dpsCOST);
+
   TRequestParamsEnumerator = class;
 
   {
@@ -68,6 +70,8 @@ type
 function GetQueryString(AParameters: TRequestParams): string;
 function IsSuccessfulResponseCode(ACode: Integer): Boolean;
 function RemoveEscaping(AString: String): String;
+function MapDPS(ADPS: TDefinitionPriceScope): String;
+function DPSPointStringToEnum(Astr: string): TDefinitionPriceScope;
 
 implementation
 
@@ -100,6 +104,29 @@ begin
   end;
 
   Result := QueryString;
+end;
+
+function MapDPS(ADPS: TDefinitionPriceScope): String;
+begin
+  case ADPS of
+    dpsSKU: Result := 'SKU' ;
+    dpsSKU_MARKETPLACE: Result := 'SKU_MARKETPLACE';
+    dpsCOST: Result := 'COST';
+  end;
+end;
+
+function DPSPointStringToEnum(Astr: string): TDefinitionPriceScope;
+begin
+  if Astr = 'dpsSKU' then
+  begin
+    Result:= dpsSKU;
+  end else if Astr = 'dpsSKU_MARKETPLACE' then
+  begin
+    Result := dpsSKU_MARKETPLACE;
+  end else if Astr = 'dpsCOST' then
+  begin
+    Result := dpsCOST;
+  end;
 end;
 
 { TRequestParam }
