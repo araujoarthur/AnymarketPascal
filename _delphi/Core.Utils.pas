@@ -1,3 +1,14 @@
+{
+  ATTENTION! THIS UNIT IS UNDOCUMMENTED AND IS SUBJECT TO IMMEDIATE CHANGE, FOR THIS REASON:
+  - DON'T RELY ON METHODS DECLARED HERE UNLESS TO THEIR SPECIFIC FUNCTIONALITY __TO KEEP COMPATIBILITY WITH UI__.
+  - DON'T ADD, CHANGE OR REMOVE ANY BEHAVIOR AS IT CAN BREAK THE ENTIRE MASTERDETAIL AND REQUEST STRUCTURE
+
+  #########
+
+  ATENÇÃO! ESSA UNIT NÃO É DOCUMENTADA E ESTÁ SUJEITA A MUDANÇAS, POR ESSE MOTIVO:
+  - NÃO UTILIZE OS METODOS PRESENTES AQUI EXCETO PELA SUA FUNCIONALIDADE EXCLUSIVA PARA MANTER COMPATIBILIDADE COM A INTERFACE.
+  - NÃO ADICIONE, MODIFIQUE OU REMOVA QUALQUER COMPORTAMENTO POIS ISSO PODE QUEBRAR A ESTRUTURA DE REQUISIÇÕES E INTERFACE INTEIRA.
+}
 unit Core.Utils;
 
 interface
@@ -9,6 +20,22 @@ uses
 
 type
   TDefinitionPriceScope = (dpsSKU, dpsSKU_MARKETPLACE, dpsCOST);
+
+  TComboBoxElementDPS = class
+  private
+    FValue: TDefinitionPriceScope;
+  public
+    constructor Create(AValue: TDefinitionPriceScope);
+    property Value:TDefinitionPriceScope read FValue;
+  end;
+
+  TComboBoxElementCategoryParentID = class
+  private
+    FParentID: Integer;
+  public
+    constructor Create(AParent: Integer);
+    property Parent: Integer read FParentID;
+  end;
 
   TRequestParamsEnumerator = class;
 
@@ -72,6 +99,7 @@ function IsSuccessfulResponseCode(ACode: Integer): Boolean;
 function RemoveEscaping(AString: String): String;
 function MapDPS(ADPS: TDefinitionPriceScope): String;
 function DPSPointStringToEnum(Astr: string): TDefinitionPriceScope;
+function CheckResponseStatus(AResponseObject: TJSONObject): Boolean;
 
 implementation
 
@@ -127,6 +155,11 @@ begin
   begin
     Result := dpsCOST;
   end;
+end;
+
+function CheckResponseStatus(AResponseObject: TJSONObject): Boolean;
+begin
+  Result := (AResponseObject.GetValue<string>('status') = 'success');
 end;
 
 { TRequestParam }
@@ -260,6 +293,20 @@ begin
   Result := FIndex < (FList.Count - 1);
   if Result then
     Inc(FIndex);
+end;
+
+{ TComboBoxElementDPS }
+
+constructor TComboBoxElementDPS.Create(AValue: TDefinitionPriceScope);
+begin
+  FValue := AValue;
+end;
+
+{ TComboBoxElementCategoryParentID }
+
+constructor TComboBoxElementCategoryParentID.Create(AParent: Integer);
+begin
+  FParentID := AParent;
 end;
 
 end.

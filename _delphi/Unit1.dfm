@@ -171,6 +171,42 @@ object Form1: TForm1
           OnClick = btnRunCAT01Click
         end
       end
+      object Button1: TButton
+        Left = 200
+        Top = 18
+        Width = 105
+        Height = 25
+        Caption = 'Obter Categorias'
+        TabOrder = 1
+        OnClick = Button1Click
+      end
+      object Button2: TButton
+        Left = 200
+        Top = 49
+        Width = 75
+        Height = 25
+        Caption = 'Button2'
+        TabOrder = 2
+        OnClick = Button2Click
+      end
+      object TreeView1: TTreeView
+        Left = 643
+        Top = 43
+        Width = 273
+        Height = 214
+        Indent = 19
+        TabOrder = 3
+      end
+      object btnLoadCategories: TButton
+        Left = 784
+        Top = 12
+        Width = 132
+        Height = 25
+        Cancel = True
+        Caption = 'Carregar Categorias'
+        TabOrder = 4
+        OnClick = btnLoadCategoriesClick
+      end
     end
     object sctMarcas: TscTabSheet
       Caption = 'Marcas'
@@ -178,6 +214,14 @@ object Form1: TForm1
       WallpaperIndex = -1
       CustomBackgroundImageIndex = -1
       DrawTabsWallpaper = False
+      object GroupBox1: TGroupBox
+        Left = 3
+        Top = 3
+        Width = 185
+        Height = 254
+        Caption = 'GroupBox1'
+        TabOrder = 0
+      end
     end
     object sctProdutos: TscTabSheet
       Caption = 'Produtos'

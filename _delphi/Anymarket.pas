@@ -32,11 +32,16 @@ type
     function CriarCategoria(AName: String; APriceFactor: Integer; ADefinitionPriceScope: TDefinitionPriceScope; APartnerID: Integer = -1): TJSONObject;
     // Creates a subcategory with or without a related partnerId, mostly boilerplate code from CriarCategoria, used only to allow separation between category and subcategory creation
     function CriarSubcategoria(AName: String; APriceFactor: Integer; ADefinitionPriceScope: TDefinitionPriceScope; AParentID: Integer; APartnerID: Integer = -1): TJSONObject;
+    // Returns all categories already registered.
+    function ObterTodasCategorias: TJSONObject;
 
     // ### Brand Handlers ###
 
     // Creates a brand and return the json from the request.
     function CriarMarca(AName: String; AReducedName: String; APartnerID: Integer = -1): TJSONObject;
+
+
+
     constructor Create(AGumga: String);
   end;
 
@@ -261,6 +266,14 @@ begin
     HTTPClient.Free();
   end;
 
+end;
+
+function TAnymarket.ObterTodasCategorias: TJSONObject;
+var
+  ReqParam: TRequestParams;
+begin
+
+  Result := MakeGET(URL_BASE + '/categories/fullPath', ReqParam);
 end;
 
 end.

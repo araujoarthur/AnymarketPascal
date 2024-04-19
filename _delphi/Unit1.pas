@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Anymarket, Core.Utils,
-  Vcl.ComCtrls, scControls, System.JSON;
+  Vcl.ComCtrls, scControls, System.JSON, Anymarket.MasterDetail.Categoria;
 
 type
   TForm1 = class(TForm)
@@ -28,10 +28,18 @@ type
     sctPreco: TscTabSheet;
     sctEstoque: TscTabSheet;
     sctPedidos: TscTabSheet;
+    GroupBox1: TGroupBox;
+    Button1: TButton;
+    Button2: TButton;
+    TreeView1: TTreeView;
+    btnLoadCategories: TButton;
     procedure FormCreate(Sender: TObject);
     procedure edtpartnerIdCAT01Exit(Sender: TObject);
     procedure btnRunCAT01Click(Sender: TObject);
     procedure sctCategoriasEnter(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure btnLoadCategoriesClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -46,6 +54,19 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TForm1.btnLoadCategoriesClick(Sender: TObject);
+var
+  CategoriasObject: TJSONObject;
+  CategoriasArray: TJSONArray;
+begin
+  CategoriasObject := Anym.ObterTodasCategorias;
+
+  if CheckResponseStatus(CategoriasObject) then               // isso tudo pode ser encapsulado em um metodo TRYGETRESPONSEDATA
+  begin
+    CategoriasArray := CategoriasObject.GetValue<TJSONArray>('data');
+  end;
+end;
 
 procedure TForm1.btnRunCAT01Click(Sender: TObject);
 var
@@ -82,6 +103,18 @@ begin
 
 end;
 
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  memoTestResults.Lines.Add(Anym.ObterTodasCategorias.ToString);
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);
+var newform: TfrmCatMasterDetail;
+begin
+  newform := TfrmCatMasterDetail.Create(Self, Anym);
+  newform.Show;
+end;
+
 procedure TForm1.edtpartnerIdCAT01Exit(Sender: TObject);
 begin
   if edtpartnerIdCAT01.Text = '' then
@@ -90,7 +123,7 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-  Anym := TAnymarket.Create('SB39983035L39961202E1804795779127C171148377912700O891.I');
+  Anym := TAnymarket.Create('SB39983035L39961304E1805917634087C171260563408700O891.I');
   CAT01Runs := 0;
 end;
 

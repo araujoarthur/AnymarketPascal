@@ -128,6 +128,10 @@
         </DCCReference>
         <DCCReference Include="Anymarket.pas"/>
         <DCCReference Include="Core.Utils.pas"/>
+        <DCCReference Include="Anymarket.MasterDetail.Categoria.pas">
+            <Form>frmCatMasterDetail</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
