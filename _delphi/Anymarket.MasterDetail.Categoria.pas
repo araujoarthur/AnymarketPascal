@@ -15,20 +15,23 @@ uses
   Vcl.Dialogs,
   Vcl.CustomizeDlg,
   Vcl.StdCtrls,
-  Core.Utils, Anymarket;
+  Core.Utils,
+  Core.UI,
+  Anymarket;
 
 type
+  TMasterDetailMode = (mdmCreate, mdmEdit);
+
   TfrmCatMasterDetail = class(TForm)
     edtCatId: TEdit;
     lblCatId: TLabel;
     edtCatName: TEdit;
     lblCatName: TLabel;
-    Edit3: TEdit;
     gpbStaticItems: TGroupBox;
     gpbCategoryInfo: TGroupBox;
     lblMarkupCat: TLabel;
     lblQstMarkMarkup: TLabel;
-    edtMarkupCat: TEdit;
+    edtCatMarkup: TEdit;
     lblIdNoSistemaCat: TLabel;
     edtCatSystemID: TEdit;
     Label1: TLabel;
@@ -36,24 +39,131 @@ type
     gpbCreateAsSucat: TGroupBox;
     chkIsSubCategory: TCheckBox;
     cbCatParent: TComboBox;
-    procedure FormCreate(Sender: TObject);
+    btnSaveCategory: TButton;
+    btnCancelCategoryAction: TButton;
+    lblRequired: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
     procedure chkIsSubCategoryClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure btnCancelCategoryActionClick(Sender: TObject);
+    procedure AddCategory(Sender: TObject);
+    function CheckRequirements: Boolean;
   private
     { Private declarations }
     FAnymObject: TAnymarket;
     FCategoriesHasBeenLoaded: Boolean;
+    FPassedData: TJSONObject;
+    FMode: TMasterDetailMode;
   public
     { Public declarations }
-    constructor Create(AOwner: TComponent; AAnymObject: TAnymarket); reintroduce;
+    constructor Create(AOwner: TComponent; AAnymObject: TAnymarket; AMode: TMasterDetailMode; AData: TJSONObject = nil); reintroduce;
   end;
 
 var
   frmCatMasterDetail: TfrmCatMasterDetail;
 
+function GetCurrentItemFromComboBox(AComboBox: TComboBox): TObject;
+
 implementation
 
 {$R *.dfm}
+{ Loose Functions }
+
+function GetCurrentItemFromComboBox(AComboBox: TComboBox): TObject;
+var
+  CurrIdx: Integer;
+begin
+  CurrIdx := AComboBox.ItemIndex;
+  Result := AComboBox.Items.Objects[CurrIdx];
+end;
+
+{ TfrmCatMasterDetail }
+
+procedure TfrmCatMasterDetail.AddCategory(Sender: TObject);
+var
+  CreationResult: TJSONObject;
+  Category_Name: string;
+  Category_PriceFactor: Integer;
+  Category_DefinitionScope: TDefinitionPriceScope;
+  Category_PartnerID: Integer;
+  Category_ParentID: Integer;
+begin
+  if CheckRequirements then
+  begin
+    Category_ParentID := -1;
+    Category_Name := edtCatName.Text;
+    Category_PriceFactor := StrToInt(edtCatMarkup.Text);
+    Category_DefinitionScope := (GetCurrentItemFromComboBox(cbScopeDP) as TComboBoxElementDPS).Value;
+
+    if edtCatSystemID.Text <> '' then
+    begin
+      Category_PartnerID := StrToInt(edtCatSystemID.Text);
+    end else
+    begin
+      Category_PartnerID := -1;
+    end;
+
+    if chkIsSubCategory.Checked then // Fluxo de criação da subcategoria
+    begin
+      Category_ParentID := (GetCurrentItemFromComboBox(cbCatParent) as TJSONObject)
+                              .GetValue<Integer>('id');
+
+      CreationResult := FAnymObject.CriarSubcategoria(Category_Name,
+                                      Category_PriceFactor,
+                                      Category_DefinitionScope,
+                                      Category_ParentID,
+                                      Category_PartnerID);
+    end else
+    begin    // Fluxo de criação de uma categoria mãe
+      CreationResult := FAnymObject.CriarCategoria(Category_Name,
+                                      Category_PriceFactor,
+                                      Category_DefinitionScope,
+                                      Category_PartnerID);
+    end;
+
+    if CheckResponseStatus(CreationResult) then
+    begin
+      MessageDlg('Categoria Criada com Sucesso!', mtConfirmation, [mbOK], 0);
+      ModalResult := 1;
+    end else
+    begin
+      MessageDlg('Não foi possível criar a categoria, erro: ' + CreationResult.GetValue<String>('response_code'), mtError, [mbOK], 0);
+      ModalResult := -1;
+    end;
+
+  end
+  else begin
+    MessageDlg('Preencha todos os campos marcados como obrigatórios', mtError, [mbOK], 0);
+  end;
+end;
+
+procedure TfrmCatMasterDetail.btnCancelCategoryActionClick(Sender: TObject);
+begin
+  Self.Close;
+end;
+
+function TfrmCatMasterDetail.CheckRequirements: Boolean;
+begin
+
+  Result := True;
+
+  if edtCatName.Text = '' then
+  begin
+    Result := False;
+  end else if edtCatMarkup.Text = '' then
+  begin
+    Result := False;
+  end
+  else if cbScopeDP.ItemIndex = -1 then
+  begin
+    Result := False;
+  end else if (chkIsSubCategory.Checked and (cbCatParent.ItemIndex = -1)) then
+  begin
+    Result := False;
+  end;
+
+end;
 
 procedure TfrmCatMasterDetail.chkIsSubCategoryClick(Sender: TObject);
 var
@@ -73,16 +183,21 @@ begin
       if (CheckResponseStatus(CategoriesObject)) then
       begin
         CategoriesArray := CategoriesObject.GetValue<TJSONArray>('data');  // <Generics> may break in Delphi 10
-        for Value in CategoriesArray do
+        if PopulateComboBoxWithCategories(cbCatParent, CategoriesArray) then
         begin
-          ValueObject := Value as TJSONObject;
-          cbCatParent.AddItem(ValueObject.GetValue<String>('name'), ValueObject);
+          FCategoriesHasBeenLoaded := True;
+        end else
+        begin
+          MessageDlg('Não foi possível obter lista de categorias', mtError, [mbOK], 0);
+          cbCatParent.Enabled := False;
+          chkIsSubCategory.Checked := False;
         end;
-        FCategoriesHasBeenLoaded := True;
+
       end else
       begin
         MessageDlg('Não foi possível obter lista de categorias', mtError, [mbOK], 0);
         cbCatParent.Enabled := False;
+        chkIsSubCategory.Checked := False;
       end;
 
     end;
@@ -93,13 +208,19 @@ begin
 end;
 
 constructor TfrmCatMasterDetail.Create(AOwner: TComponent;
-  AAnymObject: TAnymarket);
+  AAnymObject: TAnymarket; AMode: TMasterDetailMode; AData: TJSONObject = nil);
 begin
   inherited Create(AOwner);
   FAnymObject := AAnymObject;
+  FMode := AMode;
+
+  if AMode = mdmEdit then
+  begin
+    FPassedData := AData;
+  end;
 end;
 
-procedure TfrmCatMasterDetail.FormCreate(Sender: TObject);
+procedure TfrmCatMasterDetail.FormShow(Sender: TObject);
 var
   SKUScope, ADScope, CostScope: TComboBoxElementDPS;
 begin
@@ -110,10 +231,12 @@ begin
   cbScopeDP.AddItem('Manual via SKU', SKUScope);
   cbScopeDP.AddItem('Manual via Anúncio', ADScope);
   cbScopeDP.AddItem('Automático via mudança de custo', CostScope);
-end;
 
-procedure TfrmCatMasterDetail.FormShow(Sender: TObject);
-begin
+  if FMode = mdmCreate then
+  begin
+    Self.Caption := 'Adicionando Nova Categoria';
+  end;
+
   FCategoriesHasBeenLoaded := False;
 end;
 

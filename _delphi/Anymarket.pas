@@ -128,7 +128,6 @@ begin
     Result := MakePost(URL_BASE + '/categories', Body);
   finally
     Parent.Free;
-    Body.Free;
   end;
 end;
 
