@@ -28,9 +28,6 @@ object frmCatMasterDetail: TfrmCatMasterDetail
     Align = alTop
     Caption = 'Valores Est'#225'ticos'
     TabOrder = 0
-    ExplicitLeft = 20
-    ExplicitTop = 20
-    ExplicitWidth = 1038
     object lblCatId: TLabel
       Left = 38
       Top = 73
@@ -70,9 +67,6 @@ object frmCatMasterDetail: TfrmCatMasterDetail
     Align = alTop
     Caption = 'Informa'#231#245'es da Categoria'
     TabOrder = 1
-    ExplicitLeft = 20
-    ExplicitTop = 198
-    ExplicitWidth = 1038
     object lblCatName: TLabel
       Left = 38
       Top = 65
@@ -141,8 +135,8 @@ object frmCatMasterDetail: TfrmCatMasterDetail
     object lblRequired: TLabel
       Left = 302
       Top = 53
-      Width = 39
-      Height = 28
+      Width = 14
+      Height = 41
       Hint = 'Obrigat'#243'rio'
       Margins.Left = 8
       Margins.Top = 8
@@ -161,8 +155,8 @@ object frmCatMasterDetail: TfrmCatMasterDetail
     object Label2: TLabel
       Left = 142
       Top = 122
-      Width = 24
-      Height = 39
+      Width = 14
+      Height = 41
       Hint = 'Obrigat'#243'rio'
       Margins.Left = 8
       Margins.Top = 8
@@ -181,8 +175,8 @@ object frmCatMasterDetail: TfrmCatMasterDetail
     object Label3: TLabel
       Left = 433
       Top = 195
-      Width = 64
-      Height = 38
+      Width = 14
+      Height = 41
       Hint = 'Obrigat'#243'rio'
       Margins.Left = 8
       Margins.Top = 8

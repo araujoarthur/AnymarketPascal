@@ -48,6 +48,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure btnCancelCategoryActionClick(Sender: TObject);
     procedure AddCategory(Sender: TObject);
+    procedure EditCategory(Sender: TObject);
     function CheckRequirements: Boolean;
   private
     { Private declarations }
@@ -220,6 +221,11 @@ begin
   end;
 end;
 
+procedure TfrmCatMasterDetail.EditCategory(Sender: TObject);
+begin
+//to-do
+end;
+
 procedure TfrmCatMasterDetail.FormShow(Sender: TObject);
 var
   SKUScope, ADScope, CostScope: TComboBoxElementDPS;
@@ -235,6 +241,18 @@ begin
   if FMode = mdmCreate then
   begin
     Self.Caption := 'Adicionando Nova Categoria';
+    btnSaveCategory.OnClick := AddCategory;
+  end;
+
+  if FMode = mdmEdit then
+  begin
+    if not Assigned(FPassedData) then
+    begin
+      ModalResult := -1;
+    end else begin
+      Self.Caption := 'Modificando Categoria: ' + FPassedData.GetValue<String>('name');
+      btnSaveCategory.OnClick := EditCategory;
+    end;
   end;
 
   FCategoriesHasBeenLoaded := False;

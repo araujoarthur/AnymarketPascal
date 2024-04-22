@@ -20,9 +20,9 @@ object Form1: TForm1
   TextHeight = 41
   object memoTestResults: TMemo
     Left = 0
-    Top = 618
+    Top = 731
     Width = 2294
-    Height = 842
+    Height = 729
     Margins.Left = 8
     Margins.Top = 8
     Margins.Right = 8
@@ -254,21 +254,9 @@ object Form1: TForm1
         TabOrder = 2
         OnClick = Button2Click
       end
-      object TreeView1: TTreeView
-        Left = 1608
-        Top = 108
-        Width = 682
-        Height = 535
-        Margins.Left = 8
-        Margins.Top = 8
-        Margins.Right = 8
-        Margins.Bottom = 8
-        Indent = 48
-        TabOrder = 3
-      end
       object btnLoadCategories: TButton
-        Left = 1960
-        Top = 30
+        Left = 1247
+        Top = 530
         Width = 330
         Height = 63
         Margins.Left = 8
@@ -277,12 +265,12 @@ object Form1: TForm1
         Margins.Bottom = 8
         Cancel = True
         Caption = 'Carregar Categorias'
-        TabOrder = 4
+        TabOrder = 3
         OnClick = btnLoadCategoriesClick
       end
       object edtAddCategory: TButton
-        Left = 1608
-        Top = 29
+        Left = 1593
+        Top = 94
         Width = 188
         Height = 63
         Margins.Left = 8
@@ -291,7 +279,7 @@ object Form1: TForm1
         Margins.Bottom = 8
         Cancel = True
         Caption = 'Add'
-        TabOrder = 5
+        TabOrder = 4
         OnClick = edtAddCategoryClick
       end
       object ComboBox1: TComboBox
@@ -303,8 +291,73 @@ object Form1: TForm1
         Margins.Top = 8
         Margins.Right = 8
         Margins.Bottom = 8
-        TabOrder = 6
+        TabOrder = 5
         Text = 'ComboBox1'
+      end
+      object ListBox1: TListBox
+        Left = 1593
+        Top = 173
+        Width = 673
+        Height = 428
+        Margins.Left = 8
+        Margins.Top = 8
+        Margins.Right = 8
+        Margins.Bottom = 8
+        ItemHeight = 41
+        TabOrder = 6
+      end
+      object btnEditaCategoria: TButton
+        Left = 1797
+        Top = 94
+        Width = 188
+        Height = 63
+        Margins.Left = 8
+        Margins.Top = 8
+        Margins.Right = 8
+        Margins.Bottom = 8
+        Cancel = True
+        Caption = 'Editar'
+        TabOrder = 7
+        OnClick = edtAddCategoryClick
+      end
+      object btnRemoverCategoria: TButton
+        Left = 2001
+        Top = 94
+        Width = 188
+        Height = 63
+        Margins.Left = 8
+        Margins.Top = 8
+        Margins.Right = 8
+        Margins.Bottom = 8
+        Cancel = True
+        Caption = 'Remover'
+        TabOrder = 8
+        OnClick = edtAddCategoryClick
+      end
+      object Button3: TButton
+        Left = 560
+        Top = 240
+        Width = 241
+        Height = 107
+        Margins.Left = 8
+        Margins.Top = 8
+        Margins.Right = 8
+        Margins.Bottom = 8
+        Caption = 'Button3'
+        TabOrder = 9
+        OnClick = Button3Click
+      end
+      object Edit1: TEdit
+        Left = 900
+        Top = 269
+        Width = 381
+        Height = 49
+        Margins.Left = 8
+        Margins.Top = 8
+        Margins.Right = 8
+        Margins.Bottom = 8
+        TabOrder = 10
+        Text = 'Edit1'
       end
     end
     object sctMarcas: TscTabSheet

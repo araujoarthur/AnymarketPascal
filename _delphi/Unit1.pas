@@ -31,10 +31,14 @@ type
     GroupBox1: TGroupBox;
     Button1: TButton;
     Button2: TButton;
-    TreeView1: TTreeView;
     btnLoadCategories: TButton;
     edtAddCategory: TButton;
     ComboBox1: TComboBox;
+    ListBox1: TListBox;
+    btnEditaCategoria: TButton;
+    btnRemoverCategoria: TButton;
+    Button3: TButton;
+    Edit1: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure edtpartnerIdCAT01Exit(Sender: TObject);
     procedure btnRunCAT01Click(Sender: TObject);
@@ -43,6 +47,7 @@ type
     procedure Button2Click(Sender: TObject);
     procedure btnLoadCategoriesClick(Sender: TObject);
     procedure edtAddCategoryClick(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -65,10 +70,11 @@ var
   CategoriasArray: TJSONArray;
 begin
   CategoriasObject := Anym.ObterTodasCategorias;
-
+  ListBox1.Items.Clear;
   if CheckResponseStatus(CategoriasObject) then               // isso tudo pode ser encapsulado em um metodo TRYGETRESPONSEDATA
   begin
     CategoriasArray := CategoriasObject.GetValue<TJSONArray>('data');
+    PopulateListBoxWithCategories(ListBox1, CategoriasArray);
     memoTestResults.Lines.Add(CategoriasArray.ToString);
   end;
 end;
@@ -117,13 +123,38 @@ begin
 end;
 
 procedure TForm1.Button2Click(Sender: TObject);
-var newform: TfrmCatMasterDetail;
+var
+  CategoriasObject: TJSONObject;
+  CategoriasArray: TJSONArray;
+  CatVal: TJSONValue;
 begin
-  newform := TfrmCatMasterDetail.Create(Self, Anym, mdmCreate);
-  newform.Show;
+  CategoriasObject := Anym.ObterTodasCategorias;
+  if CheckResponseStatus(CategoriasObject) then               // isso tudo pode ser encapsulado em um metodo TRYGETRESPONSEDATA
+  begin
+    CategoriasArray := CategoriasObject.GetValue<TJSONArray>('data');
+    for CatVal in FlattenCategories(CategoriasArray) do
+    begin
+      memoTestResults.Lines.Add(CatVal.ToString);
+    end;
+    
+  end;
 end;
 
 
+
+procedure TForm1.Button3Click(Sender: TObject);
+var
+  CategoriasObject: TJSONObject;
+  CategoriasArray: TJSONArray;
+  CatVal: TJSONValue;
+begin
+  CategoriasObject := Anym.ObterTodasCategorias;
+  if CheckResponseStatus(CategoriasObject) then               // isso tudo pode ser encapsulado em um metodo TRYGETRESPONSEDATA
+  begin
+    CategoriasArray := CategoriasObject.GetValue<TJSONArray>('data');
+    memoTestResults.Lines.Add(BoolToStr(Anym.ExisteCategoria(Edit1.Text, FlattenCategories(CategoriasArray)), True));
+  end;
+end;
 
 procedure TForm1.edtAddCategoryClick(Sender: TObject);
 var newform: TfrmCatMasterDetail;

@@ -34,6 +34,8 @@ type
     function CriarSubcategoria(AName: String; APriceFactor: Integer; ADefinitionPriceScope: TDefinitionPriceScope; AParentID: Integer; APartnerID: Integer = -1): TJSONObject;
     // Returns all categories already registered.
     function ObterTodasCategorias: TJSONObject;
+    // Verifies if a category with the given name already exists.
+    function ExisteCategoria(APath: String; AFlatten: TJSONArray): Boolean;
 
     // ### Brand Handlers ###
 
@@ -128,6 +130,25 @@ begin
     Result := MakePost(URL_BASE + '/categories', Body);
   finally
     Parent.Free;
+  end;
+end;
+
+function TAnymarket.ExisteCategoria(APath: String; AFlatten: TJSONArray): Boolean;
+var
+  PathValue: String;
+  FlattenedValue: TJSONValue;
+begin
+  Result := False;
+  for FlattenedValue in AFlatten do
+  begin
+    if (FlattenedValue as TJSONObject).TryGetValue<string>('path', PathValue) then
+    begin
+      if PathValue = APath then
+      begin
+        Result := True;
+        Break
+      end;
+    end;
   end;
 end;
 
