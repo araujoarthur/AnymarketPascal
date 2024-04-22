@@ -1,0 +1,1706 @@
+{
+  "info": {
+    "name": "V2 API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "CallBack",
+      "item": [
+        {
+          "name": "-callbacks--id-",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/callbacks/{id}",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "-callbacks",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/callbacks",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"\",\n  \"token\": \"\",\n  \"orderActive\": \"\",\n  \"productActive\": \"\",\n  \"transmissionActive\": \"\",\n  \"questionActive \": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Campanhas",
+      "item": [
+        {
+          "name": "-campaigns--id-",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/campaigns/{id}"
+          }
+        },
+        {
+          "name": "-campaigns",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/campaigns"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categorias",
+      "item": [
+        {
+          "name": "-categories--id-",
+          "event": [],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/categories/{id}"
+          }
+        },
+        {
+          "name": "-categories-fullPath",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/categories/fullPath"
+          }
+        },
+        {
+          "name": "-categories",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/categories",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"\",\n  \"partnerId\": \"\",\n  \"priceFactor\": \"\",\n  \"definitionPriceScope\": \"\",\n  \"parent\": {\n    \"id\": \"\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Emiss-o de Etiquetas",
+      "item": [
+        {
+          "name": "-printtag--type-",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/printtag/{type}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orders\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Feed pedido",
+      "item": [
+        {
+          "name": "-orders-feeds--id-",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/orders/feeds/{id}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "-orders-feeds",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/orders/feeds"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Estoque",
+      "item": [
+        {
+          "name": "-skus--skuId--stocks-reservation",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/skus/{skuId}/stocks/reservation"
+          }
+        },
+        {
+          "name": "-stocks-batch",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/stocks/batch",
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "-stocks-fulfillment--marketplace---idSku-",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/stocks/fulfillment/{marketplace}/{idSku}"
+          }
+        },
+        {
+          "name": "-stocks",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/stocks",
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Feed transmiss-o",
+      "item": [
+        {
+          "name": "-transmissions-feeds--id-",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/transmissions/feeds/{id}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "-transmissions-feeds",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/transmissions/feeds"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Frete",
+      "item": [
+        {
+          "name": "-freight-quotes",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/freight/quotes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"marketPlace\": \"\",\n  \"zipCode\": \"\",\n  \"additionalPercentual\": \"\",\n  \"timeout\": \"\",\n  \"products\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Grupo de caracteristica",
+      "item": [
+        {
+          "name": "Atualiza os dados de um grupo de caracteriticas",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/categories/characteristics/groups/{id}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"\",\n  \"name\": \"\",\n  \"characteristics\": [],\n  \"categories\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Cria um grupo de caracteristicas com os dados informados",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/categories/characteristics/groups/{id}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"\",\n  \"characteristics\": [],\n  \"categories\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Consulta todos os valores de grupo de caracteristicas",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/categories/characteristics/groups/{id}",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Excluir grupo de caracteristica",
+          "event": [],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              },
+              {
+                "key": "undefined",
+                "value": "",
+                "disabled": true,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/categories/characteristics/groups/{id}",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Fulfillment",
+      "item": [
+        {
+          "name": "-fulfillment--marketplace--documents",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/fulfillment/{marketplace}/documents"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Local de estoque",
+      "item": [
+        {
+          "name": "-stocks-locals--id-",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/stocks/locals/{id}",
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "-stocks-locals",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/stocks/locals",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"\",\n  \"virtual\": \"\",\n  \"defaultLocal\": \"\",\n  \"zipCode\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Marcas",
+      "item": [
+        {
+          "name": "-brands--id-",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/brands/{id}",
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "-brands",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/brands",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Alterar V-nculo de Marcas",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/brands/{id}/bind/{marketplace}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codeInMarketplace\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Consulta as Marcas para V-nculo",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/brands/{id}/marketplace/{marketplace}"
+          }
+        },
+        {
+          "name": "Vincula Marcas com os Marketplaces",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/brands/{id}/bind/{marketplace}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codeInMarketplace\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Imagem",
+      "item": [
+        {
+          "name": "-products--productId--images--imageId-",
+          "event": [],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/products/{productId}/images/{imageId}"
+          }
+        },
+        {
+          "name": "-products--productId--images",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/products/{productId}/images",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"\",\n  \"index\": \"\",\n  \"main\": \"\",\n  \"url\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Mensageria",
+      "item": [
+        {
+          "name": "-messages-order--id-",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/messages/order/{id}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Monitoramento",
+      "item": [
+        {
+          "name": "-monitorings",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/monitorings",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"partnerId\": \"\",\n  \"origin\": \"\",\n  \"message\": \"\",\n  \"details\": \"\",\n  \"createdAt\": \"\",\n  \"type\": \"\",\n  \"retryCallbackURL\": \"\",\n  \"status\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pedido",
+      "item": [
+        {
+          "name": "-orders--id- -Cancelado-",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/orders/{id}(Cancelado)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"\",\n  \"cancelDetails\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "-orders--id- -Concluido-",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/orders/{id}(Concluido)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"\",\n  \"tracking\": {\n    \"deliveredDate\": \"\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "-orders--id- -Enviado - Em Transito-",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/orders/{id}(Enviado - Em Transito)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"\",\n  \"tracking\": {\n    \"url\": \"\",\n    \"number\": \"\",\n    \"carrier\": \"\",\n    \"carrierDocument\": \"\",\n    \"estimateDate\": \"\",\n    \"shippedDate\": \"\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "-orders--id- -Faturado-",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/orders/{id}(Faturado)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"\",\n  \"invoice\": {\n    \"accessKey\": \"\",\n    \"series\": \"\",\n    \"number\": \"\",\n    \"date\": \"\",\n    \"cfop\": \"\",\n    \"companyStateTaxId\": \"\",\n    \"linkNfe\": \"\",\n    \"invoiceLink\": \"\",\n    \"extraDescription\": \"\"\n  },\n  \"metadata\": {\n    \"number-of-packages\": \"\",\n    \"cdZipCode\": \"\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "-orders--id- -Pago-",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/orders/{id}(Pago)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "-orders--id--fiscalDocument",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/orders/{id}/fiscalDocument",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "value": "",
+                  "disabled": false,
+                  "type": "default"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "-orders--id--inbound-marketplace--marketplace-",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/orders/{id}/inbound/marketplace/{marketPlace}"
+          }
+        },
+        {
+          "name": "-orders--id--nfe-type--type-",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/orders/{id}/nfe/type/{type}"
+          }
+        },
+        {
+          "name": "-orders--id--nfe",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/orders/{id}/nfe"
+          }
+        },
+        {
+          "name": "-orders--id--quote-id",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/orders/{id}/quote-id"
+          }
+        },
+        {
+          "name": "-orders--id-",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/orders/{id}"
+          }
+        },
+        {
+          "name": "-orders",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/orders",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"marketPlaceId\": \"\",\n  \"marketPlaceNumber\": \"\",\n  \"marketPlace\": \"\",\n  \"accountName\": \"\",\n  \"partnerId\": \"\",\n  \"idAccount\": \"\",\n  \"fulfillment\": \"\",\n  \"createdAt\": \"\",\n  \"paymentDate\": \"\",\n  \"transmissionStatus\": \"\",\n  \"status\": \"\",\n  \"marketPlaceStatus\": \"\",\n  \"marketPlaceStatusComplement\": \"\",\n  \"documentIntermediator\": \"\",\n  \"intermediateRegistrationId\": \"\",\n  \"documentPaymentInstitution\": \"\",\n  \"discount\": \"\",\n  \"freight\": \"\",\n  \"sellerFreight\": \"\",\n  \"interestValue\": \"\",\n  \"gross\": \"\",\n  \"total\": \"\",\n  \"marketPlaceUrl\": \"\",\n  \"marketPlaceShipmentStatus\": \"\",\n  \"shipping\": {\n    \"city\": \"\",\n    \"state\": \"\",\n    \"stateNameNormalized\": \"\",\n    \"address\": \"\",\n    \"number\": \"\",\n    \"neighborhood\": \"\",\n    \"country\": \"\",\n    \"street\": \"\",\n    \"comment\": \"\",\n    \"reference\": \"\",\n    \"zipCode\": \"\",\n    \"receiverName\": \"\",\n    \"promisedShippingTime\": \"\"\n  },\n  \"billingAddress\": {\n    \"city\": \"\",\n    \"state\": \"\",\n    \"stateNameNormalized\": \"\",\n    \"country\": \"\",\n    \"street\": \"\",\n    \"number\": \"\",\n    \"neighborhood\": \"\",\n    \"comment\": \"\",\n    \"reference\": \"\",\n    \"zipCode\": \"\"\n  },\n  \"buyer\": {\n    \"marketPlaceId\": \"\",\n    \"name\": \"\",\n    \"documentType\": \"\",\n    \"document\": \"\",\n    \"email\": \"\",\n    \"dateOfBirth\": \"\",\n    \"phone\": \"\",\n    \"cellPhone\": \"\",\n    \"documentNumberNormalized\": \"\",\n    \"companyStateTaxId\": \"\"\n  },\n  \"payments\": [],\n  \"items\": [],\n  \"deliverStatus\": \"\",\n  \"metadata\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Perguntas",
+      "item": [
+        {
+          "name": "-questions--id--answers--answerId-",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/questions/{id}/answers/{answerId}"
+          }
+        },
+        {
+          "name": "-questions--id--answers",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/questions/{id}/answers"
+          }
+        },
+        {
+          "name": "-questions--id-",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/questions/{id}"
+          }
+        },
+        {
+          "name": "Insere uma nova resposta na pergunta",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/questions/{id}/answers",
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Produto",
+      "item": [
+        {
+          "name": "-products--id-",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/products/{id}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"\",\n  \"description\": \"\",\n  \"category\": {\n    \"id\": \"\",\n    \"name\": \"\",\n    \"path\": \"\"\n  },\n  \"brand\": \"\",\n  \"nbm\": \"\",\n  \"origin\": \"\",\n  \"model\": \"\",\n  \"videoUrl\": \"\",\n  \"gender\": \"\",\n  \"warrantyTime\": \"\",\n  \"warrantyText\": \"\",\n  \"height\": \"\",\n  \"width\": \"\",\n  \"weight\": \"\",\n  \"length\": \"\",\n  \"priceFactor\": \"\",\n  \"calculatedPrice\": \"\",\n  \"definitionPriceScope\": \"\",\n  \"characteristics\": [],\n  \"kitComponents\": {\n    \"idSku\": \"\",\n    \"stockLocalId\": \"\",\n    \"percentage\": \"\",\n    \"quantity\": \"\",\n    \"isMainComponent\": \"\"\n  },\n  \"allowAutomaticSkuMarketplaceCreation\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "-products-patch--productId-",
+          "event": [],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/products/patch/{productId}"
+          }
+        },
+        {
+          "name": "-products",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/products",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"\",\n  \"title\": \"\",\n  \"description\": \"\",\n  \"externalIdProduct\": \"\",\n  \"category\": {\n    \"id\": \"\",\n    \"name\": \"\",\n    \"partnerId\": \"\"\n  },\n  \"brand\": {\n    \"id\": \"\",\n    \"name\": \"\",\n    \"reducedName\": \"\",\n    \"partnerId\": \"\"\n  },\n  \"nbm\": \"\",\n  \"origin\": \"\",\n  \"model\": \"\",\n  \"videoUrl\": \"\",\n  \"gender\": \"\",\n  \"warrantyTime\": \"\",\n  \"warrantyText\": \"\",\n  \"height\": \"\",\n  \"width\": \"\",\n  \"weight\": \"\",\n  \"length\": \"\",\n  \"priceFactor\": \"\",\n  \"calculatedPrice\": \"\",\n  \"definitionPriceScope\": \"\",\n  \"hasVariations\": \"\",\n  \"isProductActive\": \"\",\n  \"characteristics\": [],\n  \"images\": [],\n  \"skus\": [],\n  \"allowAutomaticSkuMarketplaceCreation\": \"\",\n  \"kitComponents\": {\n    \"idSku\": \"\",\n    \"stockLocalId\": \"\",\n    \"percentage\": \"\",\n    \"quantity\": \"\",\n    \"isMainComponent\": \"\"\n  },\n  \"type\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Promo--o",
+      "item": [
+        {
+          "name": "-promotions--id-",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/promotions/{id}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "SKU",
+      "item": [
+        {
+          "name": "-products--productId--skus--skuId-",
+          "event": [],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/products/{productId}/skus/{skuId}"
+          }
+        },
+        {
+          "name": "-products--productId--skus-patch--skuId-",
+          "event": [],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/products/{productId}/skus/patch/{skuId}"
+          }
+        },
+        {
+          "name": "-products--productId--skus",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/products/{productId}/skus",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"\",\n  \"partnerId\": \"\",\n  \"ean\": \"\",\n  \"amount\": \"\",\n  \"price\": \"\",\n  \"additionalTime\": \"\",\n  \"stockLocalId\": \"\",\n  \"variations\": {\n    \"variationName\": \"\"\n  },\n  \"additionalStocks\": [],\n  \"externalId\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "-skus-exports--idDocument-",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/skus/exports/{idDocument}"
+          }
+        },
+        {
+          "name": "-skus-exports",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/skus/exports"
+          }
+        }
+      ]
+    },
+    {
+      "name": "SKU Marketplace",
+      "item": [
+        {
+          "name": "-skus--skuId--marketplaces--id--send",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/skus/{skuId}/marketplaces/{id}/send"
+          }
+        },
+        {
+          "name": "-skus--skuId--marketplaces--id-",
+          "event": [],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/skus/{skuId}/marketplaces/{id}"
+          }
+        },
+        {
+          "name": "-skus--skuId--marketplaces-patch--id-",
+          "event": [],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/skus/{skuId}/marketplaces/patch/{id}"
+          }
+        },
+        {
+          "name": "-skus--skuId--marketplaces",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/skus/{skuId}/marketplaces",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idInMarketplace\": \"\",\n  \"marketPlace\": \"\",\n  \"accountName\": \"\",\n  \"price\": \"\",\n  \"discountPrice\": \"\",\n  \"permalink\": \"\",\n  \"skuInMarketplace\": \"\",\n  \"fields\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "-skus--skuId--updatePrice--marketPlace-",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/skus/{skuId}/updatePrice/{marketPlace}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": \"\",\n  \"discountPrice\": \"\",\n  \"fields\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "-skus-marketplaces-prices",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/skus/marketplaces/prices",
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "-skus-marketplaces",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/skus/marketplaces"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Template",
+      "item": [
+        {
+          "name": "-template--id-",
+          "event": [],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/template/{id}"
+          }
+        },
+        {
+          "name": "-template--marketPlace--all",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/template/{marketPlace}/all"
+          }
+        },
+        {
+          "name": "-template",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/template",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tipos de varia--o",
+      "item": [
+        {
+          "name": "-variations--id-",
+          "event": [],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/variations/{id}"
+          }
+        },
+        {
+          "name": "-variations",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/variations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"\",\n  \"partnerId\": \"\",\n  \"values\": [],\n  \"visualVariation\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transmiss-o",
+      "item": [
+        {
+          "name": "-transmissions--id-",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/transmissions/{id}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"publicationStatus\": \"\",\n  \"marketPlaceStatus\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "-transmissions-marketplace--marketplace-",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/transmissions/marketplace/{offset}/{limit}/{sort}/{statusFilter}"
+          }
+        },
+        {
+          "name": "-transmissions",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/transmissions"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Valores de varia--o",
+      "item": [
+        {
+          "name": "-variations--typeId--values--valueId-",
+          "event": [],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/variations/{typeId}/values/{valueId}"
+          }
+        },
+        {
+          "name": "-variations--typeId--values",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "gumgaToken",
+                "value": "{{apiKey}}",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": "http://sandbox-api.anymarket.com.br/v2/variations/{typeId}/values",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"\",\n  \"partnerId\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "bruno",
+      "event": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "apiKey",
+      "value": "",
+      "type": "default"
+    }
+  ]
+}
