@@ -28,7 +28,6 @@ type
     sctPreco: TscTabSheet;
     sctEstoque: TscTabSheet;
     sctPedidos: TscTabSheet;
-    GroupBox1: TGroupBox;
     Button1: TButton;
     Button2: TButton;
     btnLoadCategories: TButton;
@@ -39,6 +38,8 @@ type
     btnRemoverCategoria: TButton;
     Button3: TButton;
     Edit1: TEdit;
+    ListBox2: TListBox;
+    btnCarregarMarcas: TButton;
     procedure FormCreate(Sender: TObject);
     procedure edtpartnerIdCAT01Exit(Sender: TObject);
     procedure btnRunCAT01Click(Sender: TObject);
@@ -51,6 +52,7 @@ type
     procedure EditarCategoriaButtonEvent(Sender: TObject);
     procedure Button3Click(Sender: TObject);
     procedure ListBox1Click(Sender: TObject);
+    procedure CarregarMarcasButtonEvent(Sender: TObject);
   private
     { Private declarations }
   public
@@ -79,6 +81,17 @@ begin
     CategoriasArray := CategoriasObject.GetValue<TJSONArray>('data');
     PopulateListBoxWithCategories(ListBox1, CategoriasArray);
     memoTestResults.Lines.Add(CategoriasArray.ToString);
+  end;
+end;
+
+procedure TForm1.CarregarMarcasButtonEvent(Sender: TObject);
+var
+  MarcasElement: TJSONObject;
+begin
+  MarcasElement := Anym.ObterTodasMarcas;
+  if CheckResponseStatusNonStrict(MarcasElement) then
+  begin
+    memoTestResults.Lines.Add(MarcasElement.ToString);
   end;
 end;
 

@@ -53,6 +53,7 @@ type
     procedure LoadPassedData;
     function CheckRequirements: Boolean;
     function CheckExists: Boolean;
+    function BuildUpObject: TJSONObject;
   private
     { Private declarations }
     FCategoriesHasBeenLoaded: Boolean;
@@ -139,13 +140,43 @@ begin
   Self.Close;
 end;
 
+function TfrmCatMasterDetail.BuildUpObject: TJSONObject;
+var
+  CategoryParent: TJSONObject;
+  CategoryParentNew: TJSONObject;
+begin
+  Result := TJSONObject.Create;
+
+  if edtCatID.Text <> '' then
+    Result.AddPair('id', TJSONNumber.Create(StrToInt(edtCatId.Text)));
+
+  Result.AddPair('name', TJSONString.Create(edtCatName.Text));
+  Result.AddPair('priceFactor', TJSONNumber.Create(StrToInt(edtCatMarkup.Text)));
+
+  if edtCatSystemID.Text <> '' then
+    Result.AddPair('partnerId', TJSONString.Create(edtCatSystemID.Text));
+
+  Result.AddPair('definitionPriceScope', TJSONString.Create(MapDPS((cbScopeDP.Items.Objects[cbScopeDP.ItemIndex] as TComboBoxElementDPS).Value)));
+
+  if chkIsSubCategory.Checked and (cbCatParent.ItemIndex <> -1) then
+  begin
+    CategoryParent := ExtractComboBox(cbCatParent) as TJSONObject;
+    try
+      CategoryParentNew := TJSONObject.Create;
+      CategoryParentNew.AddPair('id', TJSONNumber.Create(CategoryParent.GetValue<Integer>('id')));
+      Result.AddPair('parent', CategoryParentNew as TJSONValue);
+    finally
+      CategoryParent.Free;
+    end;
+  end;  
+end;
+
 function TfrmCatMasterDetail.CheckExists: Boolean;
 var
   SelectedCategory: TJSONObject;
   AllCategory: TJSONObject;
   CurrentCategoryName: String;
   CategoryFullPath: String;
-  FlattenedCategs, CategoryArray: TJSONArray;
 begin
   CurrentCategoryName := edtCatName.Text;
   
@@ -238,8 +269,34 @@ begin
 end;
 
 procedure TfrmCatMasterDetail.EditCategory(Sender: TObject);
+var
+  ACreationBody: TJSONObject;
+  EditingResult: TJSONObject;
 begin
-  ShowMessage('Agora está editando');
+  if not CheckExists then
+  begin
+    if CheckRequirements then
+    begin
+      ACreationBody := BuildUpObject;
+      EditingResult := FAnymObject.AlterarCategoria(StrToInt(edtCatID.Text), ACreationBody);
+
+      if CheckResponseStatusNonStrict(EditingResult) then
+      begin
+        MessageDlg('As edições foram salvas com sucesso.', mtInformation, [mbOK], 0);
+        ModalResult := 1;
+      end else
+      begin
+        MessageDlg('Não foi possível salvar as edições na categoria', mtError, [mbOK], 0);
+      end;
+      
+    end else begin
+      MessageDlg('Preencha todos os campos obrigatórios.', mtError, [mbOK], 0);
+    end;
+
+  end else
+  begin
+    MessageDlg('Já existe uma categoria com este nome.', mtError, [mbOK], 0);
+  end;
 //to-do
 end;
 
@@ -281,27 +338,71 @@ procedure TfrmCatMasterDetail.LoadPassedData;
 var
   CategoryID: Integer;
   CategoryName: String;
-  CategoryParentObject: TJSONObject;
+  CategoryParentObject, CategoryDetails, CategoryDetailsData: TJSONObject;
   CategoryParentID: Integer;
   CategorypriceFactor: Integer;
-  CategoryPartnerSystemID: Integer;
+  CategoryPartnerSystemID: String;
   CategoryDefinitionPriceScopeString: String;
-  CategoryDefinitionPriceScope: TDefinitionPriceScope;
+  CategoryDefinitionPriceScope: TDefinitionPriceScope; 
 begin
   if Assigned(FPassedData) then
   begin  
     if FPassedData.TryGetValue('id', CategoryID) then
     begin
       edtCatId.Text := IntToStr(CategoryID);
+    end else
+    begin
+      raise Exception.Create('Não foi possível obter o ID da Categoria.');
     end;
 
     if FPassedData.TryGetValue('name', CategoryName) then
     begin
       edtCatName.Text := CategoryName;
+    end else
+    begin
+      raise Exception.Create('Não foi possível obter o nome da Categoria.');
     end;
+
+    if FPassedData.TryGetValue('priceFactor', CategorypriceFactor) then
+    begin
+      edtCatMarkup.Text := IntToStr(CategorypriceFactor);
+    end else
+    begin
+      raise Exception.Create('Não foi possível obter o priceFactor da Categoria.');
+    end;
+
+    if FPassedData.TryGetValue('partnerId', CategoryPartnerSystemID) then
+    begin
+      edtCatSystemID.Text := CategoryPartnerSystemID;
+    end;
+
+    if FPassedData.TryGetValue('parent', CategoryParentObject) then
+    begin
+      if CategoryParentObject.TryGetValue('id', CategoryParentID) then
+      begin
+        chkIsSubCategory.Checked := True; // Risky to assume cbCatParent is populated because it starts on OnClick, which is called by a mistake on checked.
+        // Encontrar categoria com o ID CategoryParentID no combobox e extrair.
+        cbCatParent.ItemIndex := SearchIntegerInComboboxObject(cbCatParent, 'id', CategoryID);
+      end;
+    end;
+
     
+    CategoryDetails := FAnymObject.ObterDetalhesCategoria(CategoryID);
     
-    
+    if CheckResponseStatus(CategoryDetails) then
+    begin
+      if CategoryDetails.TryGetValue('data', CategoryDetailsData) then
+      begin
+        CategoryDefinitionPriceScopeString := CategoryDetailsData.GetValue<String>('definitionPriceScope');
+        CategoryDefinitionPriceScope := UnmapDPS(CategoryDefinitionPriceScopeString);
+        cbScopeDP.ItemIndex := SearchDPSInComboBoxObject(cbScopeDP, CategoryDefinitionPriceScope);
+      end else
+      begin
+        raise Exception.Create('Não foi possível obter detalhes da categoria');
+      end;
+    end;
+
+
   end else begin
     raise Exception.Create('Não é possível editar categoria em branco.');
   end;

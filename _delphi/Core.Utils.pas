@@ -16,7 +16,8 @@ uses
   System.Classes,
   System.SysUtils,
   System.JSON,
-  System.DateUtils;
+  System.DateUtils,
+  Vcl.StdCtrls;
 
 type
   TDefinitionPriceScope = (dpsSKU, dpsSKU_MARKETPLACE, dpsCOST);
@@ -98,10 +99,13 @@ function GetQueryString(AParameters: TRequestParams): string;
 function IsSuccessfulResponseCode(ACode: Integer): Boolean;
 function RemoveEscaping(AString: String): String;
 function MapDPS(ADPS: TDefinitionPriceScope): String;
+function UnmapDPS(ADPSString: String): TDefinitionPriceScope;
 function DPSPointStringToEnum(Astr: string): TDefinitionPriceScope;
 function CheckResponseStatus(AResponseObject: TJSONObject): Boolean;
 function UtilsFlattenCategories(AArray: TJSONArray): TJSONArray;
 function CheckResponseStatusNonStrict(AResponseObject: TJSONObject): Boolean;
+function SearchIntegerInComboboxObject(AComboBox: TComboBox; Field: String; Value:Integer): Integer;
+function SearchDPSInComboBoxObject(AComboBox: TComboBox; Value: TDefinitionPriceScope): Integer;
 
 implementation
 
@@ -159,6 +163,16 @@ begin
   end;
 end;
 
+function UnmapDPS(ADPSString: String): TDefinitionPriceScope;
+begin
+  if ADPSString = 'SKU' then
+    Result := dpsSKU
+  else if ADPSString = 'SKU_MARKETPLACE' then
+    Result := dpsSKU_MARKETPLACE
+  else if ADPSString = 'COST' then
+    Result := dpsCOST;
+end;
+
 function CheckResponseStatus(AResponseObject: TJSONObject): Boolean;
 begin
   Result := (AResponseObject.GetValue<string>('status') = 'success');
@@ -191,6 +205,32 @@ begin
         Result.AddElement(FlatteningValue);
       end;
     end;
+  end;
+end;
+
+function SearchIntegerInComboboxObject(AComboBox: TComboBox; Field: String; Value:Integer): Integer;
+var
+  ItemCount: Integer;
+begin
+  ItemCount := AComboBox.Items.Count;
+  for Result := 0 to ItemCount do
+  begin
+    if (AComboBox.Items.Objects[Result] as TJSONObject).GetValue<Integer>(field) = Value then
+    begin
+      break
+    end;
+  end;
+end;
+
+function SearchDPSInComboBoxObject(AComboBox: TComboBox; Value: TDefinitionPriceScope): Integer;
+var
+  ItemCount: Integer;
+begin
+  ItemCount := AComboBox.Items.Count;
+  for Result := 0 to ItemCount do
+  begin
+    if (AComboBox.Items.Objects[Result] as TComboBoxElementDPS).Value = Value then
+      break;
   end;
 end;
 

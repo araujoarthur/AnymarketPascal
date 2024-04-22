@@ -1,37 +1,54 @@
 object frmCatMasterDetail: TfrmCatMasterDetail
   Left = 0
   Top = 0
+  Margins.Left = 8
+  Margins.Top = 8
+  Margins.Right = 8
+  Margins.Bottom = 8
   BorderStyle = bsSingle
-  ClientHeight = 314
-  ClientWidth = 441
+  ClientHeight = 785
+  ClientWidth = 1143
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -12
+  Font.Height = -30
   Font.Name = 'Segoe UI'
   Font.Style = []
   OnShow = FormShow
-  TextHeight = 15
+  PixelsPerInch = 240
+  TextHeight = 41
   object gpbStaticItems: TGroupBox
     Left = 0
     Top = 0
-    Width = 441
-    Height = 65
+    Width = 1143
+    Height = 163
+    Margins.Left = 8
+    Margins.Top = 8
+    Margins.Right = 8
+    Margins.Bottom = 8
     Align = alTop
     Caption = 'Valores Est'#225'ticos'
     TabOrder = 0
     object lblCatId: TLabel
-      Left = 15
-      Top = 29
-      Width = 11
-      Height = 15
+      Left = 38
+      Top = 73
+      Width = 29
+      Height = 41
+      Margins.Left = 8
+      Margins.Top = 8
+      Margins.Right = 8
+      Margins.Bottom = 8
       Caption = 'ID'
     end
     object edtCatId: TEdit
-      Left = 32
-      Top = 26
-      Width = 64
-      Height = 23
+      Left = 80
+      Top = 65
+      Width = 160
+      Height = 49
+      Margins.Left = 8
+      Margins.Top = 8
+      Margins.Right = 8
+      Margins.Bottom = 8
       TabStop = False
       AutoSelect = False
       NumbersOnly = True
@@ -41,36 +58,52 @@ object frmCatMasterDetail: TfrmCatMasterDetail
   end
   object gpbCategoryInfo: TGroupBox
     Left = 0
-    Top = 65
-    Width = 441
-    Height = 122
+    Top = 163
+    Width = 1143
+    Height = 305
+    Margins.Left = 8
+    Margins.Top = 8
+    Margins.Right = 8
+    Margins.Bottom = 8
     Align = alTop
     Caption = 'Informa'#231#245'es da Categoria'
     TabOrder = 1
     object lblCatName: TLabel
-      Left = 15
-      Top = 26
-      Width = 106
-      Height = 15
+      Left = 38
+      Top = 65
+      Width = 266
+      Height = 41
+      Margins.Left = 8
+      Margins.Top = 8
+      Margins.Right = 8
+      Margins.Bottom = 8
       Caption = 'Nome da Categoria:'
     end
     object lblMarkupCat: TLabel
-      Left = 14
-      Top = 55
-      Width = 59
-      Height = 15
+      Left = 35
+      Top = 138
+      Width = 149
+      Height = 41
+      Margins.Left = 8
+      Margins.Top = 8
+      Margins.Right = 8
+      Margins.Bottom = 8
       Caption = 'Markup     :'
     end
     object lblQstMarkMarkup: TLabel
-      Left = 61
-      Top = 55
-      Width = 5
-      Height = 15
+      Left = 153
+      Top = 138
+      Width = 13
+      Height = 41
       Hint = 'Multiplicador do Custo do Item para Calculo do Pre'#231'o Base'
+      Margins.Left = 8
+      Margins.Top = 8
+      Margins.Right = 8
+      Margins.Bottom = 8
       Caption = '?'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -12
+      Font.Height = -30
       Font.Name = 'Segoe UI'
       Font.Style = [fsBold, fsUnderline]
       ParentFont = False
@@ -79,29 +112,41 @@ object frmCatMasterDetail: TfrmCatMasterDetail
       StyleElements = [seBorder]
     end
     object lblIdNoSistemaCat: TLabel
-      Left = 167
-      Top = 55
-      Width = 75
-      Height = 15
+      Left = 418
+      Top = 138
+      Width = 190
+      Height = 41
+      Margins.Left = 8
+      Margins.Top = 8
+      Margins.Right = 8
+      Margins.Bottom = 8
       Caption = 'ID no Sistema:'
     end
     object Label1: TLabel
-      Left = 15
-      Top = 84
-      Width = 160
-      Height = 15
+      Left = 38
+      Top = 210
+      Width = 404
+      Height = 41
+      Margins.Left = 8
+      Margins.Top = 8
+      Margins.Right = 8
+      Margins.Bottom = 8
       Caption = 'Escopo de Defini'#231#227'o do Pre'#231'o:'
     end
     object lblRequired: TLabel
-      Left = 121
-      Top = 21
-      Width = 5
-      Height = 15
+      Left = 303
+      Top = 53
+      Width = 14
+      Height = 41
       Hint = 'Obrigat'#243'rio'
+      Margins.Left = 8
+      Margins.Top = 8
+      Margins.Right = 8
+      Margins.Bottom = 8
       Caption = '*'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clRed
-      Font.Height = -12
+      Font.Height = -30
       Font.Name = 'Segoe UI'
       Font.Style = [fsBold]
       ParentFont = False
@@ -109,15 +154,19 @@ object frmCatMasterDetail: TfrmCatMasterDetail
       ShowHint = True
     end
     object Label2: TLabel
-      Left = 57
-      Top = 49
-      Width = 5
-      Height = 15
+      Left = 143
+      Top = 123
+      Width = 14
+      Height = 41
       Hint = 'Obrigat'#243'rio'
+      Margins.Left = 8
+      Margins.Top = 8
+      Margins.Right = 8
+      Margins.Bottom = 8
       Caption = '*'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clRed
-      Font.Height = -12
+      Font.Height = -30
       Font.Name = 'Segoe UI'
       Font.Style = [fsBold]
       ParentFont = False
@@ -125,15 +174,19 @@ object frmCatMasterDetail: TfrmCatMasterDetail
       ShowHint = True
     end
     object Label3: TLabel
-      Left = 173
-      Top = 78
-      Width = 5
-      Height = 15
+      Left = 433
+      Top = 195
+      Width = 14
+      Height = 41
       Hint = 'Obrigat'#243'rio'
+      Margins.Left = 8
+      Margins.Top = 8
+      Margins.Right = 8
+      Margins.Bottom = 8
       Caption = '*'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clRed
-      Font.Height = -12
+      Font.Height = -30
       Font.Name = 'Segoe UI'
       Font.Style = [fsBold]
       ParentFont = False
@@ -141,59 +194,87 @@ object frmCatMasterDetail: TfrmCatMasterDetail
       ShowHint = True
     end
     object edtCatName: TEdit
-      Left = 127
-      Top = 23
-      Width = 274
-      Height = 23
+      Left = 318
+      Top = 58
+      Width = 685
+      Height = 49
+      Margins.Left = 8
+      Margins.Top = 8
+      Margins.Right = 8
+      Margins.Bottom = 8
       TabOrder = 0
     end
     object edtCatMarkup: TEdit
-      Left = 79
-      Top = 52
-      Width = 82
-      Height = 23
+      Left = 198
+      Top = 130
+      Width = 205
+      Height = 49
+      Margins.Left = 8
+      Margins.Top = 8
+      Margins.Right = 8
+      Margins.Bottom = 8
       ImeName = 'Portuguese (Brazilian ABNT)'
       NumbersOnly = True
       TabOrder = 1
     end
     object edtCatSystemID: TEdit
-      Left = 250
-      Top = 55
-      Width = 153
-      Height = 23
+      Left = 625
+      Top = 138
+      Width = 383
+      Height = 49
+      Margins.Left = 8
+      Margins.Top = 8
+      Margins.Right = 8
+      Margins.Bottom = 8
       NumbersOnly = True
       TabOrder = 2
     end
     object cbScopeDP: TComboBox
-      Left = 183
-      Top = 83
-      Width = 145
-      Height = 23
+      Left = 458
+      Top = 208
+      Width = 362
+      Height = 49
+      Margins.Left = 8
+      Margins.Top = 8
+      Margins.Right = 8
+      Margins.Bottom = 8
       ImeName = 'Portuguese (Brazilian ABNT)'
       TabOrder = 3
     end
   end
   object gpbCreateAsSucat: TGroupBox
     Left = 0
-    Top = 187
-    Width = 441
-    Height = 69
+    Top = 468
+    Width = 1143
+    Height = 172
+    Margins.Left = 8
+    Margins.Top = 8
+    Margins.Right = 8
+    Margins.Bottom = 8
     Align = alTop
     Caption = 'Criar como Subcategoria'
     TabOrder = 2
     object cbCatParent: TComboBox
-      Left = 199
-      Top = 40
-      Width = 145
-      Height = 23
+      Left = 498
+      Top = 100
+      Width = 362
+      Height = 49
+      Margins.Left = 8
+      Margins.Top = 8
+      Margins.Right = 8
+      Margins.Bottom = 8
       Enabled = False
       TabOrder = 0
     end
     object chkIsSubCategory: TCheckBox
-      Left = 15
-      Top = 40
-      Width = 178
-      Height = 17
+      Left = 38
+      Top = 100
+      Width = 445
+      Height = 43
+      Margins.Left = 8
+      Margins.Top = 8
+      Margins.Right = 8
+      Margins.Bottom = 8
       Caption = 'Criar como subcategoria de:'
       TabOrder = 1
       OnClick = chkIsSubCategoryClick
@@ -201,34 +282,32 @@ object frmCatMasterDetail: TfrmCatMasterDetail
   end
   object btnSaveCategory: TButton
     AlignWithMargins = True
-    Left = 361
-    Top = 274
-    Width = 75
-    Height = 22
-    Margins.Top = 18
-    Margins.Right = 5
-    Margins.Bottom = 18
+    Left = 943
+    Top = 685
+    Width = 187
+    Height = 55
+    Margins.Left = 8
+    Margins.Top = 45
+    Margins.Right = 13
+    Margins.Bottom = 45
     Align = alRight
     Caption = 'Salvar'
     TabOrder = 3
     OnClick = AddCategory
-    ExplicitLeft = 356
-    ExplicitTop = 269
   end
   object btnCancelCategoryAction: TButton
     AlignWithMargins = True
-    Left = 275
-    Top = 274
-    Width = 80
-    Height = 22
-    Margins.Top = 18
-    Margins.Bottom = 18
+    Left = 727
+    Top = 685
+    Width = 200
+    Height = 55
+    Margins.Left = 8
+    Margins.Top = 45
+    Margins.Right = 8
+    Margins.Bottom = 45
     Align = alRight
     Caption = 'Cancelar'
     TabOrder = 4
     OnClick = btnCancelCategoryActionClick
-    ExplicitLeft = 264
-    ExplicitTop = 280
-    ExplicitHeight = 25
   end
 end

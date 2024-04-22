@@ -34,19 +34,24 @@ type
     function CriarSubcategoria(AName: String; APriceFactor: Integer; ADefinitionPriceScope: TDefinitionPriceScope; AParentID: Integer; APartnerID: Integer = -1): TJSONObject;
     // Returns all categories already registered.
     function ObterTodasCategorias: TJSONObject;
+    // Gets details of a category given its generated ID.
+    function ObterDetalhesCategoria(ID: Integer): TJSONObject;
     // Verifies if a category with the given name already exists in a given flatten JSON Array.
     function ExisteCategoria(APath: String; AFlatten: TJSONArray): Boolean; overload;
     // The same as the above, but gets the category list and flattens it. User must only pass the path but is COSTLY.
     function ExisteCategoria(APath: String): Boolean; overload;
     // Deletes an existing category.
     function ExcluirCategoria(ACategoryID: Integer): TJSONObject;
+    // Modify the category with the ID given ID. Note it's important to send a complete body because this operation is completed with a PUT, not a PATCH. Any missing information will be overwritten to NULL.
+    function AlterarCategoria(ACategoryID: Integer; ANewBody: TJSONObject): TJSONObject;
 
 
     // ### Brand Handlers ###
 
     // Creates a brand and return the json from the request.
     function CriarMarca(AName: String; AReducedName: String; APartnerID: Integer = -1): TJSONObject;
-
+    // Gets a list of all brands.
+    function ObterTodasMarcas: TJSONObject;
 
 
     constructor Create(AGumga: String);
@@ -58,6 +63,12 @@ uses
   Vcl.Dialogs; // remove in a future.
 
 { TAnymarket }
+
+function TAnymarket.AlterarCategoria(ACategoryID: Integer;
+  ANewBody: TJSONObject): TJSONObject;
+begin
+  Result := MakePut(URL_BASE + '/categories/' + IntToStr(ACategoryID), ANewBody);
+end;
 
 constructor TAnymarket.Create(AGumga: String);
 begin
@@ -227,7 +238,7 @@ end;
 
 function TAnymarket.MakePut(AURL: String; ABody: TJSONObject): TJSONObject;
 begin
-  Result := MakeRequest(rmPOST, AURL, ABody);
+  Result := MakeRequest(rmPUT, AURL, ABody);
 end;
 
 function TAnymarket.MakeRequest(ARequestMethod: TRequestMethods; AURL: String;
@@ -367,12 +378,27 @@ begin
 
 end;
 
+function TAnymarket.ObterDetalhesCategoria(ID: Integer): TJSONObject;
+var
+  ReqParam: TRequestParams;
+begin
+  Result := MakeGet(URL_BASE + '/categories/' + IntToStr(ID), ReqParam);
+end;
+
 function TAnymarket.ObterTodasCategorias: TJSONObject;
 var
   ReqParam: TRequestParams;
 begin
 
   Result := MakeGET(URL_BASE + '/categories/fullPath', ReqParam);
+end;
+
+function TAnymarket.ObterTodasMarcas: TJSONObject;
+var
+  EmptyReq: TRequestParams;
+begin
+  // Multiple Req to complete the list with all brands.
+  Result := MakeGet(URL_BASE + '/brands', EmptyReq);
 end;
 
 end.
