@@ -6,7 +6,8 @@ uses
   Anymarket in 'Anymarket.pas',
   Core.Utils in 'Core.Utils.pas',
   Anymarket.MasterDetail.Categoria in 'Anymarket.MasterDetail.Categoria.pas' {frmCatMasterDetail},
-  Core.UI in 'Core.UI.pas';
+  Core.UI in 'Core.UI.pas',
+  Anymarket.MasterDetail in 'Anymarket.MasterDetail.pas' {TFormMasterDetail};
 
 {$R *.res}
 
@@ -14,6 +15,5 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TForm1, Form1);
-  Application.CreateForm(TfrmCatMasterDetail, frmCatMasterDetail);
   Application.Run;
 end.

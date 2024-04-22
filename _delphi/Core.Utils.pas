@@ -100,6 +100,8 @@ function RemoveEscaping(AString: String): String;
 function MapDPS(ADPS: TDefinitionPriceScope): String;
 function DPSPointStringToEnum(Astr: string): TDefinitionPriceScope;
 function CheckResponseStatus(AResponseObject: TJSONObject): Boolean;
+function UtilsFlattenCategories(AArray: TJSONArray): TJSONArray;
+function CheckResponseStatusNonStrict(AResponseObject: TJSONObject): Boolean;
 
 implementation
 
@@ -160,6 +162,36 @@ end;
 function CheckResponseStatus(AResponseObject: TJSONObject): Boolean;
 begin
   Result := (AResponseObject.GetValue<string>('status') = 'success');
+end;
+
+function CheckResponseStatusNonStrict(AResponseObject: TJSONObject): Boolean;
+begin
+  Result := (AResponseObject.GetValue<string>('status') = 'success') or (AResponseObject.GetValue<string>('status') = 'success - no content');
+end;
+
+function UtilsFlattenCategories(AArray: TJSONArray): TJSONArray;
+var
+  Value: TJSONValue;
+  ValueObject: TJSONObject;
+  ChildrenValue: TJSONValue;
+  ChildrenArray: TJSONArray;
+  FlatteningResult: TJSONArray;
+  FlatteningValue: TJSONValue;
+begin
+  Result := TJSONArray.Create;
+  for Value in AArray do
+  begin
+    Result.AddElement(Value);
+    if (Value as TJSONObject).TryGetValue('children', ChildrenValue) then
+    begin
+      ChildrenArray := ChildrenValue as TJSONArray;
+      FlatteningResult := UtilsFlattenCategories(ChildrenArray);
+      for FlatteningValue in FlatteningResult do
+      begin
+        Result.AddElement(FlatteningValue);
+      end;
+    end;
+  end;
 end;
 
 { TRequestParam }

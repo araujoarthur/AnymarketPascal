@@ -23,7 +23,7 @@ type
     function MakePost(AURL: String; ABody: TJSONObject): TJSONObject;   // In the future it'll be made protected
     function MakeGet(AURL: String; AParams: TRequestParams): TJSONObject; // In the future it'll be made protected
     function MakePut(AURL: String; ABody: TJSONObject): TJSONObject;  // In the future it'll be made protected
-
+    function MakeDelete(AURL: String): TJSONObject;
      { All the handlers currently return the raw body of the JSON response. In a future they will be filtered for errors and return proper types (boolean, string, integer, whatever is needed)}
 
     // ### Category Handlers ###
@@ -34,8 +34,13 @@ type
     function CriarSubcategoria(AName: String; APriceFactor: Integer; ADefinitionPriceScope: TDefinitionPriceScope; AParentID: Integer; APartnerID: Integer = -1): TJSONObject;
     // Returns all categories already registered.
     function ObterTodasCategorias: TJSONObject;
-    // Verifies if a category with the given name already exists.
-    function ExisteCategoria(APath: String; AFlatten: TJSONArray): Boolean;
+    // Verifies if a category with the given name already exists in a given flatten JSON Array.
+    function ExisteCategoria(APath: String; AFlatten: TJSONArray): Boolean; overload;
+    // The same as the above, but gets the category list and flattens it. User must only pass the path but is COSTLY.
+    function ExisteCategoria(APath: String): Boolean; overload;
+    // Deletes an existing category.
+    function ExcluirCategoria(ACategoryID: Integer): TJSONObject;
+
 
     // ### Brand Handlers ###
 
@@ -133,6 +138,47 @@ begin
   end;
 end;
 
+function TAnymarket.ExcluirCategoria(ACategoryID: Integer): TJSONObject;
+begin
+  Result := MakeDELETE(URL_BASE + '/categories/' + IntToStr(ACategoryID));
+end;
+
+function TAnymarket.ExisteCategoria(APath: String): Boolean;
+var
+  CategoryResponse: TJSONObject;
+  CategoryArray: TJSONArray;
+  CategoryFlatten: TJSONArray;
+  FlattenValue: TJSONValue;
+  PathValue: String;
+begin
+
+  CategoryResponse := ObterTodasCategorias();
+
+  Result := False;
+
+  try
+    if CheckResponseStatus(CategoryResponse) then
+    begin
+      CategoryArray := CategoryResponse.GetValue<TJSONArray>('data');
+      CategoryFlatten := UtilsFlattenCategories(CategoryArray);
+      for FlattenValue in CategoryFlatten do
+      begin
+        if (FlattenValue as TJSONObject).TryGetValue<string>('path', PathValue) then
+        begin
+          if LowerCase(PathValue) = LowerCase(APath) then
+          begin
+            Result := True;
+            Break
+          end;
+        end;
+      end;
+    end;
+  finally
+    if Assigned(CategoryResponse) then
+      CategoryResponse.Free;
+  end;
+end;
+
 function TAnymarket.ExisteCategoria(APath: String; AFlatten: TJSONArray): Boolean;
 var
   PathValue: String;
@@ -143,13 +189,21 @@ begin
   begin
     if (FlattenedValue as TJSONObject).TryGetValue<string>('path', PathValue) then
     begin
-      if PathValue = APath then
+      if LowerCase(PathValue) = LowerCase(APath) then
       begin
         Result := True;
         Break
       end;
     end;
   end;
+end;
+
+function TAnymarket.MakeDelete(AURL: String): TJSONObject;
+var
+  ReqURL: String;
+begin
+  ReqURL := AURL;
+  Result := MakeRequest(rmDELETE, ReqURL);
 end;
 
 function TAnymarket.MakeGet(AURL: String;  AParams: TRequestParams): TJSONObject;
@@ -272,7 +326,7 @@ begin
           Result.AddPair('status', 'success - no content');
           Result.AddPair('response_code', HTTPResponse.StatusCode);
         end;
-      end 
+      end
       else
       begin
         Result.AddPair('data', TJSONObject.ParseJSONValue(HTTPResponse.ContentAsString()));
@@ -280,8 +334,33 @@ begin
         Result.AddPair('status', 'failed');
       end;
                
-    end; // END PUT BLOCK ---------------------------------------------------------------
+    end // END PUT BLOCK ---------------------------------------------------------------
+    else if ARequestMethod = rmDELETE then   // DELETE BLOCK ---------------------------
+    begin
+      HTTPResponse := HTTPClient.Delete(AURL);
 
+      if IsSuccessfulResponseCode(HTTPResponse.StatusCode) then
+      begin
+        if HTTPResponse.ContentLength > 0 then
+        begin
+          Result.AddPair('data', TJSONObject.ParseJSONValue(HTTPResponse.ContentAsString()));
+          Result.AddPair('status', 'success');
+          Result.AddPair('response_code', HTTPResponse.StatusCode);
+        end
+        else
+        begin
+          Result.AddPair('data', TJSONObject.ParseJSONValue(HTTPResponse.ContentAsString()));
+          Result.AddPair('status', 'success - no content');
+          Result.AddPair('response_code', HTTPResponse.StatusCode);
+        end;
+      end
+      else
+      begin
+        Result.AddPair('data', TJSONObject.ParseJSONValue(HTTPResponse.ContentAsString()));
+        Result.AddPair('response_code', HTTPResponse.StatusCode);
+        Result.AddPair('status', 'failed');
+      end;
+    end; // END DELETE BLOCK -----------------------------------------------------------
   finally
     HTTPClient.Free();
   end;

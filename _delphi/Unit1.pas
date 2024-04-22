@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Anymarket, Core.Utils,
-  Vcl.ComCtrls, scControls, System.JSON, Anymarket.MasterDetail.Categoria, Core.UI;
+  Vcl.ComCtrls, scControls, System.JSON, Anymarket.MasterDetail.Categoria, Core.UI, Anymarket.MasterDetail;
 
 type
   TForm1 = class(TForm)
@@ -32,7 +32,7 @@ type
     Button1: TButton;
     Button2: TButton;
     btnLoadCategories: TButton;
-    edtAddCategory: TButton;
+    btnAddCategory: TButton;
     ComboBox1: TComboBox;
     ListBox1: TListBox;
     btnEditaCategoria: TButton;
@@ -45,9 +45,12 @@ type
     procedure sctCategoriasEnter(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
-    procedure btnLoadCategoriesClick(Sender: TObject);
-    procedure edtAddCategoryClick(Sender: TObject);
+    procedure CarregarCategoriasButtonEvent(Sender: TObject);
+    procedure AdicionarCategoriaButtonEvent(Sender: TObject);
+    procedure RemoverCategoriaButtonEvent(Sender: TObject);
+    procedure EditarCategoriaButtonEvent(Sender: TObject);
     procedure Button3Click(Sender: TObject);
+    procedure ListBox1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -64,7 +67,7 @@ implementation
 
 {$R *.dfm}
 
-procedure TForm1.btnLoadCategoriesClick(Sender: TObject);
+procedure TForm1.CarregarCategoriasButtonEvent(Sender: TObject);
 var
   CategoriasObject: TJSONObject;
   CategoriasArray: TJSONArray;
@@ -156,7 +159,22 @@ begin
   end;
 end;
 
-procedure TForm1.edtAddCategoryClick(Sender: TObject);
+procedure TForm1.EditarCategoriaButtonEvent(Sender: TObject);
+var
+  ExtractedCategoryData: TJSONObject;
+  MasterDetailEditMode: TfrmCatMasterDetail;
+begin
+  ExtractedCategoryData := ExtractListBox(ListBox1) as TJSONObject;
+  memoTestResults.Lines.Add(ExtractedCategoryData.ToString);
+  MasterDetailEditMode := TfrmCatMasterDetail.Create(Self, Anym, mdmEdit, ExtractedCategoryData);
+  try
+    MasterDetailEditMode.ShowModal;
+  finally
+    MasterDetailEditMode.Free;
+  end;
+end;
+
+procedure TForm1.AdicionarCategoriaButtonEvent(Sender: TObject);
 var newform: TfrmCatMasterDetail;
 begin
   newform := TfrmCatMasterDetail.Create(Self, Anym, mdmCreate);
@@ -179,6 +197,51 @@ begin
   countercbx := 0;
   Anym := TAnymarket.Create('SB39983035L39961304E1805917634087C171260563408700O891.I');
   CAT01Runs := 0;
+end;
+
+procedure TForm1.ListBox1Click(Sender: TObject);
+begin
+  if ListBox1.ItemIndex <> -1 then
+  begin
+    btnEditaCategoria.Enabled := True;
+    btnRemoverCategoria.Enabled := True;
+  end
+  else begin
+    btnEditaCategoria.Enabled := False;
+    btnRemoverCategoria.Enabled := True;
+  end;
+end;
+
+procedure TForm1.RemoverCategoriaButtonEvent(Sender: TObject);
+var
+  CategoryObject: TJSONObject;
+  ExclusionResult: TJSONObject;
+  DataObject: TJSONObject;
+  ErrorMessage: String;
+begin
+  CategoryObject := ExtractListBox(ListBox1) as TJSONObject;
+
+  if MessageDlg('Tem certeza que deseja remover a categoria "'+CategoryObject.GetValue<string>('name')+'"?', mtConfirmation, [mbOK, mbCancel], 0) = mrCancel then
+    Exit;
+
+
+  ExclusionResult := Anym.ExcluirCategoria(CategoryObject.GetValue<Integer>('id'));
+
+  if CheckResponseStatusNonStrict(ExclusionResult) then
+  begin
+    ShowMessage('Categoria Excluida!');
+    CarregarCategoriasButtonEvent(btnRemoverCategoria as TObject);
+  end else
+  begin
+    if ExclusionResult.TryGetValue('data', DataObject) and DataObject.TryGetValue('message', ErrorMessage) then
+    begin
+      MessageDlg('Não foi possível remover categoria: ' + ErrorMessage, mtError, [mbOK], 0);
+    end else
+    begin
+      MessageDlg('Não foi possível remover categoria.', mtError, [mbOK], 0);
+    end;
+  end;
+
 end;
 
 procedure TForm1.sctCategoriasEnter(Sender: TObject);

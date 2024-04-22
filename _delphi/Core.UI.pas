@@ -24,6 +24,8 @@ uses
 function AddChars(AString: String; ACount: Integer): String;
 function PopulateComboBoxWithCategories(AComboBox:TComboBox; AArray: TJSONArray; AIdentLevel: Integer = 0): Boolean;
 function PopulateListBoxWithCategories(AListBox: TListBox; AArray: TJSONArray; AIdentLevel: Integer = 0): Boolean;
+function ExtractListBox(AListBox: TListBox): TObject;
+function ExtractComboBox(AComboBox: TComboBox): TObject;
 function FlattenCategories(AArray: TJSONArray): TJSONArray;
 implementation
 
@@ -123,6 +125,16 @@ begin
       end;
     end;
   end;
+end;
+
+function ExtractListBox(AListBox: TListBox): TObject;
+begin
+  Result := AListBox.Items.Objects[AListBox.ItemIndex];
+end;
+
+function ExtractComboBox(AComboBox: TComboBox): TObject;
+begin
+  Result := AComboBox.Items.Objects[AComboBox.ItemIndex];
 end;
 
 end.

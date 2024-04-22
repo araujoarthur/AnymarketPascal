@@ -9,6 +9,7 @@ uses
   System.Variants,
   System.Classes,
   System.JSON,
+  System.UITypes,
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
@@ -17,12 +18,12 @@ uses
   Vcl.StdCtrls,
   Core.Utils,
   Core.UI,
-  Anymarket;
+  Anymarket,
+  Anymarket.MasterDetail;
 
 type
-  TMasterDetailMode = (mdmCreate, mdmEdit);
 
-  TfrmCatMasterDetail = class(TForm)
+  TfrmCatMasterDetail = class(TTFormMasterDetail)
     edtCatId: TEdit;
     lblCatId: TLabel;
     edtCatName: TEdit;
@@ -49,36 +50,24 @@ type
     procedure btnCancelCategoryActionClick(Sender: TObject);
     procedure AddCategory(Sender: TObject);
     procedure EditCategory(Sender: TObject);
+    procedure LoadPassedData;
     function CheckRequirements: Boolean;
+    function CheckExists: Boolean;
   private
     { Private declarations }
-    FAnymObject: TAnymarket;
     FCategoriesHasBeenLoaded: Boolean;
-    FPassedData: TJSONObject;
-    FMode: TMasterDetailMode;
+    FCategoriesArray: TJSONArray;
   public
     { Public declarations }
-    constructor Create(AOwner: TComponent; AAnymObject: TAnymarket; AMode: TMasterDetailMode; AData: TJSONObject = nil); reintroduce;
+    destructor Destroy; reintroduce;
   end;
 
 var
   frmCatMasterDetail: TfrmCatMasterDetail;
 
-function GetCurrentItemFromComboBox(AComboBox: TComboBox): TObject;
-
 implementation
 
 {$R *.dfm}
-{ Loose Functions }
-
-function GetCurrentItemFromComboBox(AComboBox: TComboBox): TObject;
-var
-  CurrIdx: Integer;
-begin
-  CurrIdx := AComboBox.ItemIndex;
-  Result := AComboBox.Items.Objects[CurrIdx];
-end;
-
 { TfrmCatMasterDetail }
 
 procedure TfrmCatMasterDetail.AddCategory(Sender: TObject);
@@ -90,58 +79,92 @@ var
   Category_PartnerID: Integer;
   Category_ParentID: Integer;
 begin
-  if CheckRequirements then
+  if not CheckExists then
   begin
-    Category_ParentID := -1;
-    Category_Name := edtCatName.Text;
-    Category_PriceFactor := StrToInt(edtCatMarkup.Text);
-    Category_DefinitionScope := (GetCurrentItemFromComboBox(cbScopeDP) as TComboBoxElementDPS).Value;
+    if CheckRequirements then
+    begin
+      Category_Name := edtCatName.Text;
+      Category_PriceFactor := StrToInt(edtCatMarkup.Text);
+      Category_DefinitionScope := (GetCurrentItemFromComboBox(cbScopeDP) as TComboBoxElementDPS).Value;
 
-    if edtCatSystemID.Text <> '' then
-    begin
-      Category_PartnerID := StrToInt(edtCatSystemID.Text);
-    end else
-    begin
-      Category_PartnerID := -1;
+      if edtCatSystemID.Text <> '' then
+      begin
+        Category_PartnerID := StrToInt(edtCatSystemID.Text);
+      end else
+      begin
+        Category_PartnerID := -1;
+      end;
+
+      if chkIsSubCategory.Checked then // Fluxo de criação da subcategoria
+      begin
+        Category_ParentID := (GetCurrentItemFromComboBox(cbCatParent) as TJSONObject)
+                                .GetValue<Integer>('id');
+
+        CreationResult := FAnymObject.CriarSubcategoria(Category_Name,
+                                        Category_PriceFactor,
+                                        Category_DefinitionScope,
+                                        Category_ParentID,
+                                        Category_PartnerID);
+      end else
+      begin    // Fluxo de criação de uma categoria mãe
+        CreationResult := FAnymObject.CriarCategoria(Category_Name,
+                                        Category_PriceFactor,
+                                        Category_DefinitionScope,
+                                        Category_PartnerID);
+      end;
+
+      if CheckResponseStatus(CreationResult) then
+      begin
+        MessageDlg('Categoria Criada com Sucesso!', mtConfirmation, [mbOK], 0);
+        ModalResult := 1;
+      end else
+      begin
+        MessageDlg('Não foi possível criar a categoria, erro: ' + CreationResult.GetValue<String>('response_code'), mtError, [mbOK], 0);
+        ModalResult := -1;
+      end;
+
+    end
+    else begin
+      MessageDlg('Preencha todos os campos marcados como obrigatórios', mtError, [mbOK], 0);
     end;
-
-    if chkIsSubCategory.Checked then // Fluxo de criação da subcategoria
-    begin
-      Category_ParentID := (GetCurrentItemFromComboBox(cbCatParent) as TJSONObject)
-                              .GetValue<Integer>('id');
-
-      CreationResult := FAnymObject.CriarSubcategoria(Category_Name,
-                                      Category_PriceFactor,
-                                      Category_DefinitionScope,
-                                      Category_ParentID,
-                                      Category_PartnerID);
-    end else
-    begin    // Fluxo de criação de uma categoria mãe
-      CreationResult := FAnymObject.CriarCategoria(Category_Name,
-                                      Category_PriceFactor,
-                                      Category_DefinitionScope,
-                                      Category_PartnerID);
-    end;
-
-    if CheckResponseStatus(CreationResult) then
-    begin
-      MessageDlg('Categoria Criada com Sucesso!', mtConfirmation, [mbOK], 0);
-      ModalResult := 1;
-    end else
-    begin
-      MessageDlg('Não foi possível criar a categoria, erro: ' + CreationResult.GetValue<String>('response_code'), mtError, [mbOK], 0);
-      ModalResult := -1;
-    end;
-
-  end
-  else begin
-    MessageDlg('Preencha todos os campos marcados como obrigatórios', mtError, [mbOK], 0);
+  end else begin
+      MessageDlg('Já existe uma categoria ou subcategoria com o mesmo nome.', mtError, [mbOK], 0);
   end;
+  
+  
 end;
 
 procedure TfrmCatMasterDetail.btnCancelCategoryActionClick(Sender: TObject);
 begin
   Self.Close;
+end;
+
+function TfrmCatMasterDetail.CheckExists: Boolean;
+var
+  SelectedCategory: TJSONObject;
+  AllCategory: TJSONObject;
+  CurrentCategoryName: String;
+  CategoryFullPath: String;
+  FlattenedCategs, CategoryArray: TJSONArray;
+begin
+  CurrentCategoryName := edtCatName.Text;
+  
+  if (FMode = mdmEdit) and (FPassedData.GetValue<String>('name') = CurrentCategoryName) then
+  begin
+    Exit(False);
+  end;
+
+  
+  if chkIsSubCategory.Checked then
+  begin
+    SelectedCategory := GetCurrentItemFromComboBox(cbCatParent) as TJSONObject;
+    CategoryFullPath := SelectedCategory.GetValue<String>('path') + '/' + CurrentCategoryName;
+  end else
+  begin
+    CategoryFullPath := CurrentCategoryName;
+  end;
+
+  Result := FAnymObject.ExisteCategoria(CategoryFullPath); 
 end;
 
 function TfrmCatMasterDetail.CheckRequirements: Boolean;
@@ -169,9 +192,6 @@ end;
 procedure TfrmCatMasterDetail.chkIsSubCategoryClick(Sender: TObject);
 var
   CategoriesObject: TJSONObject;
-  CategoriesArray: TJSONArray;
-  Value: TJSONValue;
-  ValueObject: TJSONObject;
 begin
   if chkIsSubCategory.Checked then
   begin
@@ -183,8 +203,8 @@ begin
 
       if (CheckResponseStatus(CategoriesObject)) then
       begin
-        CategoriesArray := CategoriesObject.GetValue<TJSONArray>('data');  // <Generics> may break in Delphi 10
-        if PopulateComboBoxWithCategories(cbCatParent, CategoriesArray) then
+        FCategoriesArray := CategoriesObject.GetValue<TJSONArray>('data');  // <Generics> may break in Delphi 10
+        if PopulateComboBoxWithCategories(cbCatParent, FCategoriesArray) then
         begin
           FCategoriesHasBeenLoaded := True;
         end else
@@ -208,23 +228,21 @@ begin
   end;
 end;
 
-constructor TfrmCatMasterDetail.Create(AOwner: TComponent;
-  AAnymObject: TAnymarket; AMode: TMasterDetailMode; AData: TJSONObject = nil);
-begin
-  inherited Create(AOwner);
-  FAnymObject := AAnymObject;
-  FMode := AMode;
 
-  if AMode = mdmEdit then
-  begin
-    FPassedData := AData;
-  end;
+
+destructor TfrmCatMasterDetail.Destroy;
+begin
+  inherited Destroy;
+  if Assigned(FCategoriesArray) then
+    FCategoriesArray.Free;
 end;
 
 procedure TfrmCatMasterDetail.EditCategory(Sender: TObject);
 begin
+  ShowMessage('Agora está editando');
 //to-do
 end;
+
 
 procedure TfrmCatMasterDetail.FormShow(Sender: TObject);
 var
@@ -252,10 +270,41 @@ begin
     end else begin
       Self.Caption := 'Modificando Categoria: ' + FPassedData.GetValue<String>('name');
       btnSaveCategory.OnClick := EditCategory;
+      LoadPassedData();
     end;
   end;
 
   FCategoriesHasBeenLoaded := False;
+end;
+
+procedure TfrmCatMasterDetail.LoadPassedData;
+var
+  CategoryID: Integer;
+  CategoryName: String;
+  CategoryParentObject: TJSONObject;
+  CategoryParentID: Integer;
+  CategorypriceFactor: Integer;
+  CategoryPartnerSystemID: Integer;
+  CategoryDefinitionPriceScopeString: String;
+  CategoryDefinitionPriceScope: TDefinitionPriceScope;
+begin
+  if Assigned(FPassedData) then
+  begin  
+    if FPassedData.TryGetValue('id', CategoryID) then
+    begin
+      edtCatId.Text := IntToStr(CategoryID);
+    end;
+
+    if FPassedData.TryGetValue('name', CategoryName) then
+    begin
+      edtCatName.Text := CategoryName;
+    end;
+    
+    
+    
+  end else begin
+    raise Exception.Create('Não é possível editar categoria em branco.');
+  end;
 end;
 
 end.
