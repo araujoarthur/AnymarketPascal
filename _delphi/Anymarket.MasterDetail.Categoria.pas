@@ -76,9 +76,11 @@ var
   CreationResult: TJSONObject;
   Category_Name: string;
   Category_PriceFactor: Integer;
-  Category_DefinitionScope: TDefinitionPriceScope;
+  Category_DefinitionScope: String;
   Category_PartnerID: Integer;
   Category_ParentID: Integer;
+  ErrorData: TJSONObject;
+  ErrorMessage: String;
 begin
   if not CheckExists then
   begin
@@ -86,7 +88,8 @@ begin
     begin
       Category_Name := edtCatName.Text;
       Category_PriceFactor := StrToInt(edtCatMarkup.Text);
-      Category_DefinitionScope := (GetCurrentItemFromComboBox(cbScopeDP) as TComboBoxElementDPS).Value;
+      {Category_DefinitionScope := (GetCurrentItemFromComboBox(cbScopeDP) as TComboBoxElementDPS).Value;}
+      Category_DefinitionScope := ExtractPriceScope(cbScopeDP);
 
       if edtCatSystemID.Text <> '' then
       begin
@@ -120,7 +123,18 @@ begin
         ModalResult := 1;
       end else
       begin
-        MessageDlg('Não foi possível criar a categoria, erro: ' + CreationResult.GetValue<String>('response_code'), mtError, [mbOK], 0);
+
+        ErrorMessage := '...';
+        if CreationResult.TryGetValue('data', ErrorData) then
+        begin
+          try
+            ErrorData.TryGetValue('message', ErrorMessage);
+          finally
+            ErrorData.Free;
+          end;
+        end;
+
+        MessageDlg('Não foi possível criar a categoria, erro: ' + CreationResult.GetValue<String>('response_code') + ' - ' + ErrorMessage, mtError, [mbOK], 0);
         ModalResult := -1;
       end;
 
@@ -156,7 +170,7 @@ begin
   if edtCatSystemID.Text <> '' then
     Result.AddPair('partnerId', TJSONString.Create(edtCatSystemID.Text));
 
-  Result.AddPair('definitionPriceScope', TJSONString.Create(MapDPS((cbScopeDP.Items.Objects[cbScopeDP.ItemIndex] as TComboBoxElementDPS).Value)));
+  Result.AddPair('definitionPriceScope', TJSONString.Create(ExtractPriceScope(cbScopeDP)));
 
   if chkIsSubCategory.Checked and (cbCatParent.ItemIndex <> -1) then
   begin
@@ -279,7 +293,6 @@ begin
     begin
       ACreationBody := BuildUpObject;
       EditingResult := FAnymObject.AlterarCategoria(StrToInt(edtCatID.Text), ACreationBody);
-
       if CheckResponseStatusNonStrict(EditingResult) then
       begin
         MessageDlg('As edições foram salvas com sucesso.', mtInformation, [mbOK], 0);
@@ -305,13 +318,15 @@ procedure TfrmCatMasterDetail.FormShow(Sender: TObject);
 var
   SKUScope, ADScope, CostScope: TComboBoxElementDPS;
 begin
-  SKUScope := TComboBoxElementDPS.Create(dpsSKU);
+ { SKUScope := TComboBoxElementDPS.Create(dpsSKU);
   ADScope := TComboBoxElementDPS.Create(dpsSKU_MARKETPLACE);
   CostScope := TComboBoxElementDPS.Create(dpsCOST);
 
   cbScopeDP.AddItem('Manual via SKU', SKUScope);
   cbScopeDP.AddItem('Manual via Anúncio', ADScope);
-  cbScopeDP.AddItem('Automático via mudança de custo', CostScope);
+  cbScopeDP.AddItem('Automático via mudança de custo', CostScope);   }
+
+  PopulateComboBoxWithPriceScopes(cbScopeDP);
 
   if FMode = mdmCreate then
   begin
@@ -382,7 +397,7 @@ begin
       begin
         chkIsSubCategory.Checked := True; // Risky to assume cbCatParent is populated because it starts on OnClick, which is called by a mistake on checked.
         // Encontrar categoria com o ID CategoryParentID no combobox e extrair.
-        cbCatParent.ItemIndex := SearchIntegerInComboboxObject(cbCatParent, 'id', CategoryID);
+        cbCatParent.ItemIndex := SearchIntegerInComboboxObject(cbCatParent, 'id', CategoryParentID);
       end;
     end;
 
@@ -394,8 +409,9 @@ begin
       if CategoryDetails.TryGetValue('data', CategoryDetailsData) then
       begin
         CategoryDefinitionPriceScopeString := CategoryDetailsData.GetValue<String>('definitionPriceScope');
-        CategoryDefinitionPriceScope := UnmapDPS(CategoryDefinitionPriceScopeString);
-        cbScopeDP.ItemIndex := SearchDPSInComboBoxObject(cbScopeDP, CategoryDefinitionPriceScope);
+        {CategoryDefinitionPriceScope := UnmapDPS(CategoryDefinitionPriceScopeString);
+         cbScopeDP.ItemIndex := SearchDPSInComboBoxObject(cbScopeDP, CategoryDefinitionPriceScope);       }
+        cbScopeDP.ItemIndex := MapPriceScopeStringIntoComboBoxElement(CategoryDefinitionPriceScopeString);
       end else
       begin
         raise Exception.Create('Não foi possível obter detalhes da categoria');

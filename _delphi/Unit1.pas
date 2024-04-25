@@ -3,7 +3,7 @@ unit Unit1;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.UITypes, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Anymarket, Core.Utils,
   Vcl.ComCtrls, scControls, System.JSON, Anymarket.MasterDetail.Categoria, Core.UI, Anymarket.MasterDetail;
 
@@ -101,7 +101,7 @@ var
   catMarkup: Integer;
   catPriceScope: string;
   catPartnerID: Integer;
-  ReqRes: TJSONObject;
+//  ReqRes: TJSONObject;
 begin
   catName := edtCategoryNameCAT01.Text;
   catMarkup := StrToInt(edtMarkupCAT01.Text);
@@ -118,11 +118,11 @@ begin
   memoTestResults.Lines.Add('       partnerId: ' + IntToStr(catPartnerID));
   memoTestResults.Lines.Add('');
 
-  ReqRes := Anym.CriarCategoria(catName, catMarkup, DPSPointStringToEnum(catPriceScope), catPartnerID);
+  //ReqRes := Anym.CriarCategoria(catName, catMarkup, DPSPointStringToEnum(catPriceScope), catPartnerID);
 
   memoTestResults.Lines.Add('CAT-01 RUN ' + IntToStr(CAT01Runs) + ' RESULT: ');
   memoTestResults.Lines.Add('');
-  memoTestResults.Lines.Add(ReqRes.ToString);
+  //memoTestResults.Lines.Add(ReqRes.ToString);
   memoTestResults.Lines.Add('');
   memoTestResults.Lines.Add('CAT-01 RUN ' + IntToStr(CAT01Runs) + ' FINISHED.');
   memoTestResults.Lines.Add('');
@@ -162,7 +162,7 @@ procedure TForm1.Button3Click(Sender: TObject);
 var
   CategoriasObject: TJSONObject;
   CategoriasArray: TJSONArray;
-  CatVal: TJSONValue;
+  // CatVal: TJSONValue;
 begin
   CategoriasObject := Anym.ObterTodasCategorias;
   if CheckResponseStatus(CategoriasObject) then               // isso tudo pode ser encapsulado em um metodo TRYGETRESPONSEDATA

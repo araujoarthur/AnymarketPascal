@@ -22,12 +22,18 @@ uses
   Vcl.ComCtrls;
 
 function AddChars(AString: String; ACount: Integer): String;
+function PopulateComboBoxWithPriceScopes(AComboBox: TComboBox): Boolean;
+function ExtractPriceScope(AComboBox: TComboBox): String;
+function MapPriceScopeStringIntoComboBoxElement(AStringElement: String): Integer;
 function PopulateComboBoxWithCategories(AComboBox:TComboBox; AArray: TJSONArray; AIdentLevel: Integer = 0): Boolean;
 function PopulateListBoxWithCategories(AListBox: TListBox; AArray: TJSONArray; AIdentLevel: Integer = 0): Boolean;
 function ExtractListBox(AListBox: TListBox): TObject;
 function ExtractComboBox(AComboBox: TComboBox): TObject;
 function FlattenCategories(AArray: TJSONArray): TJSONArray;
 implementation
+
+uses
+  Vcl.Dialogs;
 
 function AddChars(AString: String; ACount: Integer): String;
 var
@@ -46,6 +52,39 @@ begin
   end;
   
     
+end;
+
+function PopulateComboBoxWithPriceScopes(AComboBox: TComboBox): Boolean;
+begin
+  AComboBox.Items.Add('Manual via SKU');
+  AComboBox.Items.Add('Manual via Anúncio');
+  AComboBox.Items.Add('Automático via mudança de custo');
+  Result := True;
+end;
+
+function ExtractPriceScope(AComboBox: TComboBox): String;
+begin
+  if AComboBox.ItemIndex = 0 then
+    Result := 'SKU'
+  else if AComboBox.ItemIndex = 1 then
+    Result := 'SKU_MARKETPLACE'
+  else if AComboBox.ItemIndex = 2 then
+    Result := 'COST'
+  else
+     raise Exception.Create('Not a valid combobox.');
+end;
+
+function MapPriceScopeStringIntoComboBoxElement(AStringElement: String): Integer;
+begin
+  ShowMessage(AStringElement);
+  if UpperCase(AStringElement) = 'SKU' then
+    Result := 0
+  else if UpperCase(AStringElement) = 'SKU_MARKETPLACE' then
+    Result := 1
+  else if UpperCase(AStringElement) = 'COST' then
+    Result := 2
+  else
+     raise Exception.Create('Not a valid string.');
 end;
 
 function PopulateComboBoxWithCategories(AComboBox:TComboBox; AArray: TJSONArray; AIdentLevel: Integer = 0): Boolean;

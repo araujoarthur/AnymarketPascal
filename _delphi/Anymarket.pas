@@ -29,9 +29,9 @@ type
     // ### Category Handlers ###
 
     // Creates a category with or without a related partnerId
-    function CriarCategoria(AName: String; APriceFactor: Integer; ADefinitionPriceScope: TDefinitionPriceScope; APartnerID: Integer = -1): TJSONObject;
+    function CriarCategoria(AName: String; APriceFactor: Integer; ADefinitionPriceScope: String; APartnerID: Integer = -1): TJSONObject;
     // Creates a subcategory with or without a related partnerId, mostly boilerplate code from CriarCategoria, used only to allow separation between category and subcategory creation
-    function CriarSubcategoria(AName: String; APriceFactor: Integer; ADefinitionPriceScope: TDefinitionPriceScope; AParentID: Integer; APartnerID: Integer = -1): TJSONObject;
+    function CriarSubcategoria(AName: String; APriceFactor: Integer; ADefinitionPriceScope: String; AParentID: Integer; APartnerID: Integer = -1): TJSONObject;
     // Returns all categories already registered.
     function ObterTodasCategorias: TJSONObject;
     // Gets details of a category given its generated ID.
@@ -76,7 +76,7 @@ begin
 end;
 
 function TAnymarket.CriarCategoria(AName: String; APriceFactor: Integer;
-  ADefinitionPriceScope: TDefinitionPriceScope;
+  ADefinitionPriceScope: String;
   APartnerID: Integer): TJSONObject;
 var
   Body: TJSONObject;
@@ -85,7 +85,7 @@ begin
   try
     Body.AddPair('name', TJSONString.Create(AName));
     Body.AddPair('priceFactor', TJSONNumber.Create(APriceFactor));
-    Body.AddPair('definitionPriceScope', TJSONString.Create(MapDPS(ADefinitionPriceScope)));
+    Body.AddPair('definitionPriceScope', TJSONString.Create(ADefinitionPriceScope));
     if APartnerID >= 0 then
     begin
       Body.AddPair('partnerId', TJSONString.Create(IntToStr(APartnerID)));
@@ -122,7 +122,7 @@ end;
 
 // boilerplate function to allow separation of category/subcategory creation.
 function TAnymarket.CriarSubcategoria(AName: String; APriceFactor: Integer;
-  ADefinitionPriceScope: TDefinitionPriceScope; AParentID,
+  ADefinitionPriceScope: String; AParentID,
   APartnerID: Integer): TJSONObject;
 var
   Body: TJSONObject;
@@ -133,7 +133,7 @@ begin
   try
     Body.AddPair('name', TJSONString.Create(AName));
     Body.AddPair('priceFactor', TJSONNumber.Create(APriceFactor));
-    Body.AddPair('definitionPriceScope', TJSONString.Create(MapDPS(ADefinitionPriceScope)));
+    Body.AddPair('definitionPriceScope', TJSONString.Create(ADefinitionPriceScope));
 
     Parent.AddPair('id', AParentID);
     Body.AddPair('parent', Parent);
