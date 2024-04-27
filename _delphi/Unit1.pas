@@ -40,6 +40,7 @@ type
     Edit1: TEdit;
     ListBox2: TListBox;
     btnCarregarMarcas: TButton;
+    Button4: TButton;
     procedure FormCreate(Sender: TObject);
     procedure edtpartnerIdCAT01Exit(Sender: TObject);
     procedure btnRunCAT01Click(Sender: TObject);
@@ -53,6 +54,7 @@ type
     procedure Button3Click(Sender: TObject);
     procedure ListBox1Click(Sender: TObject);
     procedure CarregarMarcasButtonEvent(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -66,6 +68,8 @@ var
   countercbx: Integer;
 
 implementation
+
+uses Anymarket.Produtos;
 
 {$R *.dfm}
 
@@ -170,6 +174,11 @@ begin
     CategoriasArray := CategoriasObject.GetValue<TJSONArray>('data');
     memoTestResults.Lines.Add(BoolToStr(Anym.ExisteCategoria(Edit1.Text, FlattenCategories(CategoriasArray)), True));
   end;
+end;
+
+procedure TForm1.Button4Click(Sender: TObject);
+begin
+  TProdutoAnymarket.Create();
 end;
 
 procedure TForm1.EditarCategoriaButtonEvent(Sender: TObject);

@@ -139,6 +139,9 @@
             <Form>TFormMasterDetail</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="Anymarket.Produtos.pas"/>
+        <DCCReference Include="Core.Bitfield.pas"/>
+        <DCCReference Include="Anymarket.Produtos.Builder.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
