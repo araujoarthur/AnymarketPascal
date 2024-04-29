@@ -142,6 +142,7 @@
         <DCCReference Include="Anymarket.Produtos.pas"/>
         <DCCReference Include="Core.Bitfield.pas"/>
         <DCCReference Include="Anymarket.Produtos.Builder.pas"/>
+        <DCCReference Include="Anymarket.Produtos.Subtypes.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

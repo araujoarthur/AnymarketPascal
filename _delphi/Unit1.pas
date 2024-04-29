@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.UITypes, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Anymarket, Core.Utils,
-  Vcl.ComCtrls, scControls, System.JSON, Anymarket.MasterDetail.Categoria, Core.UI, Anymarket.MasterDetail;
+  Vcl.ComCtrls, scControls, System.JSON, Anymarket.MasterDetail.Categoria, Core.UI, Anymarket.MasterDetail,
+  Anymarket.Produtos.Builder, Anymarket.Produtos;
 
 type
   TForm1 = class(TForm)
@@ -68,8 +69,6 @@ var
   countercbx: Integer;
 
 implementation
-
-uses Anymarket.Produtos;
 
 {$R *.dfm}
 
@@ -177,8 +176,19 @@ begin
 end;
 
 procedure TForm1.Button4Click(Sender: TObject);
+var
+  ProdutoBuilder: IProdutoAnymarketBuilder;
+  Produto: TProdutoAnymarket;
 begin
-  TProdutoAnymarket.Create();
+  ProdutoBuilder := TProdutoAnymarketBuilder.Create();
+  Produto := ProdutoBuilder
+                            .SetID(9)
+                            .SetTitle('Foo')
+                            .SetDescription('Foo Bar')
+                            .SetCategoryID(98382)
+                            .Build();
+
+  memoTestResults.Lines.Add(Produto.SerializeObject.ToString);
 end;
 
 procedure TForm1.EditarCategoriaButtonEvent(Sender: TObject);

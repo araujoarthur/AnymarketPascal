@@ -10,7 +10,8 @@ uses
   Anymarket.MasterDetail in 'Anymarket.MasterDetail.pas' {TFormMasterDetail},
   Anymarket.Produtos in 'Anymarket.Produtos.pas',
   Core.Bitfield in 'Core.Bitfield.pas',
-  Anymarket.Produtos.Builder in 'Anymarket.Produtos.Builder.pas';
+  Anymarket.Produtos.Builder in 'Anymarket.Produtos.Builder.pas',
+  Anymarket.Produtos.Subtypes in 'Anymarket.Produtos.Subtypes.pas';
 
 {$R *.res}
 

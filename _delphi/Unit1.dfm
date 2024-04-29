@@ -445,8 +445,8 @@ object Form1: TForm1
     end
   end
   object Button4: TButton
-    Left = 1060
-    Top = 740
+    Left = 622
+    Top = 540
     Width = 188
     Height = 63
     Margins.Left = 8

@@ -127,7 +127,9 @@ interface
       procedure SetAllowAutomaticSkuMarketplaceCreation(const AValue: Boolean);
       procedure SetKitComponents (const AValue: TJSONArray);
       procedure SetProductType(const AValue:  String);
+
       function SerializeObject: TJSONObject;
+      function CheckRequeriments:Boolean;
       constructor Create;
     end;
 
@@ -137,6 +139,11 @@ uses
   Vcl.Dialogs{remover}, System.SysUtils;
 
 { TProdutoAnymarket }
+
+function TProdutoAnymarket.CheckRequeriments: Boolean;
+begin
+ //To-Do
+end;
 
 constructor TProdutoAnymarket.Create;
 begin
