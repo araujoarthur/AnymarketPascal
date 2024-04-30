@@ -5,7 +5,6 @@ INTERFACE
 uses Generics.Collections;
 
 type
-  { Only makes sense with a T of Integer types. }
   TBitfield32 = record
     BF: FixedUInt;
     class operator Initialize(out Dest: TBitField32);

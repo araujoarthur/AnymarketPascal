@@ -6,24 +6,13 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.UITypes, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Anymarket, Core.Utils,
   Vcl.ComCtrls, scControls, System.JSON, Anymarket.MasterDetail.Categoria, Core.UI, Anymarket.MasterDetail,
-  Anymarket.Produtos.Builder, Anymarket.Produtos;
+  Anymarket.Produtos.Builder, Anymarket.Produtos, Anymarket.Produtos.Subtypes;
 
 type
   TForm1 = class(TForm)
     memoTestResults: TMemo;
     pgTests: TscPageControl;
     sctCategorias: TscTabSheet;
-    gpbCAT01: TGroupBox;
-    edtCategoryNameCAT01: TEdit;
-    Label1: TLabel;
-    Label2: TLabel;
-    edtMarkupCAT01: TEdit;
-    BalloonHint1: TBalloonHint;
-    Label3: TLabel;
-    cbdefinitionPriceScopeCAT01: TComboBox;
-    Label4: TLabel;
-    edtpartnerIdCAT01: TEdit;
-    btnRunCAT01: TButton;
     sctMarcas: TscTabSheet;
     sctProdutos: TscTabSheet;
     sctPreco: TscTabSheet;
@@ -42,9 +31,8 @@ type
     ListBox2: TListBox;
     btnCarregarMarcas: TButton;
     Button4: TButton;
+    Button5: TButton;
     procedure FormCreate(Sender: TObject);
-    procedure edtpartnerIdCAT01Exit(Sender: TObject);
-    procedure btnRunCAT01Click(Sender: TObject);
     procedure sctCategoriasEnter(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -56,6 +44,7 @@ type
     procedure ListBox1Click(Sender: TObject);
     procedure CarregarMarcasButtonEvent(Sender: TObject);
     procedure Button4Click(Sender: TObject);
+    procedure Button5Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -96,41 +85,6 @@ begin
   begin
     memoTestResults.Lines.Add(MarcasElement.ToString);
   end;
-end;
-
-procedure TForm1.btnRunCAT01Click(Sender: TObject);
-var
-  catName: string;
-  catMarkup: Integer;
-  catPriceScope: string;
-  catPartnerID: Integer;
-//  ReqRes: TJSONObject;
-begin
-  catName := edtCategoryNameCAT01.Text;
-  catMarkup := StrToInt(edtMarkupCAT01.Text);
-  catPriceScope := cbdefinitionPriceScopeCAT01.Items[cbdefinitionPriceScopeCAT01.ItemIndex];
-  catPartnerID := StrToInt(edtpartnerIdCAT01.Text);
-
-  CAT01Runs := CAT01Runs + 1;
-  memoTestResults.Lines.Add('');
-  memoTestResults.Lines.Add('CAT-01 Runs: ' + IntToStr(CAT01Runs));
-  memoTestResults.Lines.Add('   PARAMETROS:');
-  memoTestResults.Lines.Add('       name: ' + catName);
-  memoTestResults.Lines.Add('       priceFactor: ' + IntToStr(catMarkup));
-  memoTestResults.Lines.Add('       definitionPriceScope: ' + catPriceScope);
-  memoTestResults.Lines.Add('       partnerId: ' + IntToStr(catPartnerID));
-  memoTestResults.Lines.Add('');
-
-  //ReqRes := Anym.CriarCategoria(catName, catMarkup, DPSPointStringToEnum(catPriceScope), catPartnerID);
-
-  memoTestResults.Lines.Add('CAT-01 RUN ' + IntToStr(CAT01Runs) + ' RESULT: ');
-  memoTestResults.Lines.Add('');
-  //memoTestResults.Lines.Add(ReqRes.ToString);
-  memoTestResults.Lines.Add('');
-  memoTestResults.Lines.Add('CAT-01 RUN ' + IntToStr(CAT01Runs) + ' FINISHED.');
-  memoTestResults.Lines.Add('');
-  memoTestResults.Lines.Add('');
-
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
@@ -191,6 +145,27 @@ begin
   memoTestResults.Lines.Add(Produto.SerializeObject.ToString);
 end;
 
+procedure TForm1.Button5Click(Sender: TObject);
+var
+  Charact1, Charact2, Charact3: TCharacteristic;
+  CharactArr: TWrapperArray<TCharacteristic>;
+  Itm: TCharacteristic;
+begin
+  Charact1 := TCharacteristic.Create('CARACT', 'Primeira');
+  Charact2 := TCharacteristic.Create('CARACTE', 'Segunda');
+  Charact3 := TCharacteristic.Create('CARACTER', 'Terceira');
+
+  CharactArr := TWrapperArray<TCharacteristic>.Create;
+  CharactArr.AddItem(Charact1);
+  CharactArr.AddItem(Charact2);
+  CharactArr.AddItem(Charact3);
+
+  for Itm in CharactArr do
+  begin
+    memoTestResults.Lines.Add(Itm.SerializeToJSON.ToString)
+  end;
+end;
+
 procedure TForm1.EditarCategoriaButtonEvent(Sender: TObject);
 var
   ExtractedCategoryData: TJSONObject;
@@ -216,12 +191,6 @@ begin
     newForm.Free;
   end;
 
-end;
-
-procedure TForm1.edtpartnerIdCAT01Exit(Sender: TObject);
-begin
-  if edtpartnerIdCAT01.Text = '' then
-    edtpartnerIdCAT01.Text := '-1';
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
