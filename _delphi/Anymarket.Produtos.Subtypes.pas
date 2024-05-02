@@ -111,6 +111,8 @@ type
 
   TSKUObject = class(TInterfacedObject, ISerializableToJSON) // Unitary Element
   private
+    FBitfield: TBitField32;
+
     FID: Integer;
     FTitle: String; //REQ
     FPartnerID: String; //REQ
@@ -150,6 +152,7 @@ type
     procedure SetTitle(const Value: String);
   public
     constructor Create;
+    function CheckRequirements: Boolean;
     function SerializeToJSON: TJSONValue;
 
     property ID: Integer read GetID write SetID;
@@ -163,14 +166,22 @@ type
     property StockLocalId: Integer read GetStockLocalId write SetStockLocalId;
   end;
 
-  TKitComponent = class   // Unitary Element
+  TKitComponent = class(TInterfacedObject, ISerializableToJSON)   // Unitary Element
   private
+    FIdSku: string;
+    FStockLocalId: string;
+    FPercentage: Double;
+    FQuantity: Double;
+    FIsMainComponent: Boolean;
+  private const
+    bfHasSetIdSku                 = 1 shl 0;
+    bfHasSetStockLocalId          = 1 shl 1;
+    bfHasSetPercentage            = 1 shl 2;
+    bfHasSetQuantity              = 1 shl 3;
+    bfHasSetIsMainComponent       = 1 shl 4;
   public
-  end;
-
-  TKitComponents = class  // Encapsulationg element (must create enumerator/iterator?)
-  private
-  public
+    constructor Create;
+    function SerializeTOJson: TJSONValue;
   end;
 
   TWrapperArray<T: ISerializableToJSON> = class // Encapsulating element.
@@ -621,6 +632,30 @@ end;
 
 { TSKUObject }
 
+function TSKUObject.CheckRequirements: Boolean;
+begin
+  Result := True;
+
+  if not FBitField.IsBitSet(bfHasSetTitle) then
+    Exit(False);
+
+  if not FBitField.IsBitSet(bfHasSetPartnerID) then
+    Exit(False);
+
+  if not FBitField.IsBitSet(bfHasSetAmount) then
+    Exit(False);
+
+  if not FBitField.IsBitSet(bfHasSetAdditionalTime) then
+    Exit(False);
+
+  if not FBitField.IsBitSet(bfHasSetPrice) then
+    Exit(False);
+
+  if not FBitField.IsBitSet(bfHasSetSellPrice) then
+    Exit(False);
+
+end;
+
 constructor TSKUObject.Create;
 begin
   FID := -1;
@@ -682,52 +717,108 @@ end;
 
 function TSKUObject.SerializeToJSON: TJSONValue;
 begin
-  //TO-DO
+  if CheckRequirements then
+  begin
+
+  end;
 end;
 
 procedure TSKUObject.SetAdditionalTime(const Value: Double);
 begin
+  if not FBitfield.IsBitSet(bfHasSetAdditionalTime) then
+  begin
+    FAdditionalTime := Value;
+    FBitfield.SetBit(bfHasSetAdditionalTime);
+  end;
 
 end;
 
 procedure TSKUObject.SetAmount(const Value: Double);
 begin
-
+  if not FBitfield.IsBitSet(bfHasSetAmount) then
+  begin
+    FAmount := Value;
+    FBitfield.SetBit(bfHasSetAmount);
+  end;
 end;
 
 procedure TSKUObject.SetEAN(const Value: String);
 begin
-
+  if not FBitfield.IsBitSet(bfHasSetEAN) then
+  begin
+    FEAN := Value;
+    FBitfield.SetBit(bfHasSetEAN);
+  end;
 end;
 
 procedure TSKUObject.SetID(const Value: Integer);
 begin
-
+  if not FBitfield.IsBitSet(bfHasSetID) then
+  begin
+    FID := Value;
+    FBitfield.SetBit(bfHasSetID);
+  end;
 end;
 
 procedure TSKUObject.SetPartnerID(const Value: String);
 begin
-
+  if not FBitfield.IsBitSet(bfHasSetPartnerID) then
+  begin
+    FPartnerId := Value;
+    FBitfield.SetBit(bfHasSetPartnerID);
+  end;
 end;
 
 procedure TSKUObject.SetPrice(const Value: Double);
 begin
-
+  if not FBitfield.IsBitSet(bfHasSetPrice) then
+  begin
+    FPrice := Value;
+    FBitfield.SetBit(bfHasSetPrice);
+  end;
 end;
 
 procedure TSKUObject.SetSellPrice(const Value: Double);
 begin
-
+  if not FBitfield.IsBitSet(bfHasSetSellPrice) then
+  begin
+    FSellPrice := Value;
+    FBitfield.SetBit(bfHasSetSellPrice);
+  end;
 end;
 
 procedure TSKUObject.SetStockLocalId(const Value: Integer);
 begin
-
+  if not FBitfield.IsBitSet(bfHasSetStockLocalId) then
+  begin
+    FStockLocalId := Value;
+    FBitfield.SetBit(bfHasSetStockLocalId);
+  end;
 end;
 
 procedure TSKUObject.SetTitle(const Value: String);
 begin
+  if not FBitfield.IsBitSet(bfHasSetTitle) then
+  begin
+    FTitle := Value;
+    FBitfield.SetBit(bfHasSetTitle);
+  end;
+end;
 
+{ TKitComponent }
+
+constructor TKitComponent.Create;
+begin
+  FIdSku := '';
+  FStockLocalId := '';
+  FPercentage := -1.0;
+  FQuantity := -1.0;
+  FIsMainComponent := False;
+end;
+
+function TKitComponent.SerializeTOJson: TJSONValue;
+begin
+  // TO-DO
 end;
 
 end.
