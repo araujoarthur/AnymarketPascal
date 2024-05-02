@@ -32,6 +32,8 @@ type
     btnCarregarMarcas: TButton;
     Button4: TButton;
     Button5: TButton;
+    Button6: TButton;
+    Edit2: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure sctCategoriasEnter(Sender: TObject);
     procedure Button1Click(Sender: TObject);
@@ -45,6 +47,7 @@ type
     procedure CarregarMarcasButtonEvent(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
+    procedure Button6Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -164,6 +167,11 @@ begin
   begin
     memoTestResults.Lines.Add(Itm.SerializeToJSON.ToString)
   end;
+end;
+
+procedure TForm1.Button6Click(Sender: TObject);
+begin
+  Edit2.Text := CapitalizeFirstLetter(Edit2.Text);
 end;
 
 procedure TForm1.EditarCategoriaButtonEvent(Sender: TObject);

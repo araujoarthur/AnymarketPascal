@@ -96,6 +96,7 @@ type
   end;
 
 function GetQueryString(AParameters: TRequestParams): string;
+function CapitalizeFirstLetter(AString: String): String;
 function IsSuccessfulResponseCode(ACode: Integer): Boolean;
 function RemoveEscaping(AString: String): String;
 function MapDPS(ADPS: TDefinitionPriceScope): String;
@@ -110,17 +111,6 @@ function SearchDPSInComboBoxObject(AComboBox: TComboBox; Value: TDefinitionPrice
 implementation
 
 { Loose Utils Functions }
-
-function RemoveEscaping(AString: String): String;
-begin
-  Result := StringReplace(AString, '\/', '/', [rfReplaceAll]);
-end;
-
-function IsSuccessfulResponseCode(ACode: Integer): Boolean;
-begin
-  Result := (ACode >= 200) and (ACode < 300);
-end;
-
 function GetQueryString(AParameters: TRequestParams): string;
 var
   QueryString: string;
@@ -139,6 +129,23 @@ begin
 
   Result := QueryString;
 end;
+
+function RemoveEscaping(AString: String): String;
+begin
+  Result := StringReplace(AString, '\/', '/', [rfReplaceAll]);
+end;
+
+function IsSuccessfulResponseCode(ACode: Integer): Boolean;
+begin
+  Result := (ACode >= 200) and (ACode < 300);
+end;
+
+function CapitalizeFirstLetter(AString: String): String;
+begin
+  AString := Lowercase(AString);
+  Result := UpCase(AString[1]) + Copy(AString, 2, Length(AString) - 1);
+end;
+
 
 function MapDPS(ADPS: TDefinitionPriceScope): String;
 begin

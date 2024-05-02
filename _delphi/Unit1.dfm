@@ -229,4 +229,21 @@ object Form1: TForm1
     TabOrder = 3
     OnClick = Button5Click
   end
+  object Button6: TButton
+    Left = 135
+    Top = 242
+    Width = 75
+    Height = 25
+    Caption = 'Button6'
+    TabOrder = 4
+    OnClick = Button6Click
+  end
+  object Edit2: TEdit
+    Left = 8
+    Top = 243
+    Width = 121
+    Height = 23
+    TabOrder = 5
+    Text = 'Edit2'
+  end
 end

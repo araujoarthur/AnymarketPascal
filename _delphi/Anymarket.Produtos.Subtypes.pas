@@ -2,14 +2,19 @@ unit Anymarket.Produtos.Subtypes;
 
 interface
 
-uses System.JSON, System.Classes, System.SysUtils, Core.Bitfield;
+uses System.JSON, System.Classes, System.SysUtils, Core.Bitfield, Core.Utils;
 
 type
   ISerializableToJSON = Interface
   ['{6A623FF2-A0BE-4B37-9D62-E5B2A5496620}']
     function SerializeToJSON: TJSONValue;
   end;
-  
+
+  // BuildableFromJson is yet to be implemented. Can receive a json and recreate the object.
+  IBuildableFromJSON = Interface
+    procedure BuildFromJson;
+  end;
+
   TCharacteristic = class(TInterfacedObject, ISerializableToJSON) // Unitary Element
   private
     FName: String;
@@ -122,6 +127,11 @@ type
     FPrice: Double; //REQ
     FSellPrice: Double;    //REQ
     FStockLocalId: Integer;
+    FVariations: TJSONObject;
+    FAdditionalStocks: TJSONArray;
+    FExternalID: String;
+    FActive: Boolean;
+    FVolumes: Double;
   private const
     bfHasSetID               = 1 shl 0;
     bfHasSetTitle            = 1 shl 1;
@@ -132,6 +142,12 @@ type
     bfHasSetPrice            = 1 shl 6;
     bfHasSetSellPrice        = 1 shl 7;
     bfHasSetStockLocalId     = 1 shl 8;
+    bfHasSetVariations       = 1 shl 9;
+    bfHasSetAdditionalStocks = 1 shl 10;
+    bfHasSetExternalID       = 1 shl 11;
+    bfHasSetActive           = 1 shl 12;
+    bfHasSetVolumes          = 1 shl 13;
+
     function GetAdditionalTime: Double;
     function GetAmount: Double;
     function GetEAN: String;
@@ -150,8 +166,27 @@ type
     procedure SetSellPrice(const Value: Double);
     procedure SetStockLocalId(const Value: Integer);
     procedure SetTitle(const Value: String);
+    function GetActive: Boolean;
+    function GetExternalId: String;
+    function GetVolumes: Double;
+    procedure SetActive(const Value: Boolean);
+    procedure SetExternalId(const Value: String);
+    procedure SetVolumes(const Value: Double);
   public
     constructor Create;
+    destructor Destroy; override;
+    procedure AddVariation(AName, AValue: String); overload;
+    procedure AddVariation(AName: String; AValue: TJSONNumber); overload;
+    procedure AddVariation(AName: String; AValue: TJSONBool);  overload;
+    procedure AddVariation(AName: String; AValue: Double); overload;
+    procedure AddVariation(AName: String; AValue: Integer); overload;
+    procedure AddVariation(AName: String; AValue: Boolean); overload;
+    
+    function GetVariation(AName: String): TJSONValue;
+    procedure RemoveVariation(AName: String);
+    procedure AddAdditionalStock(AStockLocalID: Integer; APrice, AAmount,AAdittionalTime: Double);
+    procedure RemoveAdditionalStock(AIdx: Integer);
+    function GetAdditionalStock(AIdx: Integer): TJSONObject;
     function CheckRequirements: Boolean;
     function SerializeToJSON: TJSONValue;
 
@@ -164,10 +199,15 @@ type
     property Price: Double read GetPrice write SetPrice;
     property SellPrice: Double read GetSellPrice write SetSellPrice;
     property StockLocalId: Integer read GetStockLocalId write SetStockLocalId;
+    property ExternalId: String read GetExternalId write SetExternalId;
+    property Active: Boolean read GetActive write SetActive;
+    property Volumes: Double read GetVolumes write SetVolumes;
   end;
 
   TKitComponent = class(TInterfacedObject, ISerializableToJSON)   // Unitary Element
   private
+    FBitfield: TBitfield32;
+    
     FIdSku: string;
     FStockLocalId: string;
     FPercentage: Double;
@@ -179,9 +219,25 @@ type
     bfHasSetPercentage            = 1 shl 2;
     bfHasSetQuantity              = 1 shl 3;
     bfHasSetIsMainComponent       = 1 shl 4;
+    function GetIsMainComponent: Boolean;
+    function GetPercentage: Double;
+    function GetQuantity: Double;
+    function GetSkuID: string;
+    function GetStockLocalId: string;
+    procedure SetIsMainComponent(const Value: Boolean);
+    procedure SetPercentage(const Value: Double);
+    procedure SetQuantity(const Value: Double);
+    procedure SetSkuID(const Value: string);
+    procedure SetStockLocalId(const Value: string);
   public
     constructor Create;
     function SerializeTOJson: TJSONValue;
+
+    property SkuID: string read GetSkuID write SetSkuID;
+    property StockLocalId: string read GetStockLocalId write SetStockLocalId;
+    property Percentage: Double read GetPercentage write SetPercentage;
+    property Quantity: Double read GetQuantity write SetQuantity;
+    property IsMainComponent: Boolean read GetIsMainComponent write SetIsMainComponent;
   end;
 
   TWrapperArray<T: ISerializableToJSON> = class // Encapsulating element.
@@ -310,7 +366,7 @@ begin
     FItems[I] := Value
   end else
   begin
-    raise Exception.Create('Characteristic out of bounds');
+    raise Exception.Create('Item out of bounds');
   end;
 end;
 
@@ -441,54 +497,55 @@ function TImageItem.SerializeToJSON: TJSONValue;
 var
   ResultObject: TJSONObject;
 begin
+  Result := nil;
   if CheckRequirements then
   begin
     ResultObject := TJSONObject.Create;
-    ResultObject.AddPair('main', FMain);
-    ResultObject.AddPair('url', FURL);
+    ResultObject.AddPair('main', TJSONBool.Create(FMain));
+    ResultObject.AddPair('url', TJSONString.Create(FURL));
 
 
     if FBitField.IsBitSet(bfHasSetID) then
-      ResultObject.AddPair('id', FID);
+      ResultObject.AddPair('id', TJSONNumber.Create(FID));
 
     if FBitField.IsBitSet(bfHasSetIndex) then
-      ResultObject.AddPair('index', FIndex);
+      ResultObject.AddPair('index', TJSONNumber.Create(FIndex));
 
     if FBitField.IsBitSet(bfHasSetThumbnailURL) then
-      ResultObject.AddPair('thumbnailUrl', FThumbnailURL);
+      ResultObject.AddPair('thumbnailUrl', TJSONString.Create(FThumbnailURL));
 
     if FBitField.IsBitSet(bfHasSetLowResolutionURL) then
-      ResultObject.AddPair('lowResolutionUrl',FLowResolutionURL);
+      ResultObject.AddPair('lowResolutionUrl', TJSONString.Create(FLowResolutionURL));
 
     if FBitField.IsBitSet(bfHasSetStandardURL) then
-      ResultObject.AddPair('standardUrl',FStandardURL);
+      ResultObject.AddPair('standardUrl', TJSONString.Create(FStandardURL));
 
     if FBitField.IsBitSet(bfHasSetOriginalImage) then
-      ResultObject.AddPair('originalImage', FOriginalImage);
+      ResultObject.AddPair('originalImage', TJSONString.Create(FOriginalImage));
 
     if FBitField.IsBitSet(bfHasSetVariation) then
-      ResultObject.AddPair('variation',FVariation);
+      ResultObject.AddPair('variation', TJSONString.Create(FVariation));
 
     if FBitField.IsBitSet(bfHasSetStatus) then
     begin
       if (Uppercase(FStatus.Trim) = 'UNPROCESSED') or (Uppercase(FStatus.Trim) = 'PROCESSED') or (Uppercase(FStatus.Trim) = 'ERROR') then
-        ResultObject.AddPair('status',FStatus);
+        ResultObject.AddPair('status', TJSONString.Create(FStatus));
     end;
 
     if FBitField.IsBitSet(bfHasSetStatusMessage) then
-      ResultObject.AddPair('statusMessage',FStatusMessage);
+      ResultObject.AddPair('statusMessage', TJSONString.Create(FStatusMessage));
 
     if FBitField.IsBitSet(bfHasSetStandardWidth) then
-      ResultObject.AddPair('standardWidth',FStandardWidth);
+      ResultObject.AddPair('standardWidth', TJSONNumber.Create(FStandardWidth));
 
     if FBitField.IsBitSet(bfHasSetStandardHeight) then
-      ResultObject.AddPair('standardHeight',FStandardHeight);
+      ResultObject.AddPair('standardHeight', TJSONNumber.Create(FStandardHeight));
 
     if FBitField.IsBitSet(bfHasSetOriginalWidth) then
-      ResultObject.AddPair('originalWidth',FOriginalWidth);
+      ResultObject.AddPair('originalWidth', TJSONNumber.Create(FOriginalWidth));
 
     if FBitField.IsBitSet(bfHasSetOriginalHeight) then
-      ResultObject.AddPair('originalHeight',FOriginalHeight);
+      ResultObject.AddPair('originalHeight',TJSONNumber.Create(FOriginalHeight));
 
     Result := TJSONValue(ResultObject);
 
@@ -632,6 +689,71 @@ end;
 
 { TSKUObject }
 
+procedure TSKUObject.AddAdditionalStock(AStockLocalID: Integer; APrice, AAmount,
+  AAdittionalTime: Double);
+var
+  NewASObject: TJSONObject;
+begin
+  NewASObject := TJSONObject.Create;
+  NewASObject
+    .AddPair('price', TJSONNumber.Create(APrice))
+    .AddPair('amout', TJSONNumber.Create(AAmount))
+    .AddPair('additionalTime', TJSONNumber.Create(AAdittionalTime))
+    .AddPair('stockLocalId', TJSONNumber.Create(AStockLocalID));
+
+  FAdditionalStocks.AddElement(TJSONValue(NewASObject));
+
+end;
+
+procedure TSKUObject.AddVariation(AName, AValue: String);
+begin
+
+  if not FBitfield.IsBitSet(bfHasSetVariations) then
+    FBitField.SetBit(bfHasSetVariations);
+
+  FVariations.AddPair(CapitalizeFirstLetter(AName), TJSONString.Create(AValue));
+end;
+
+procedure TSKUObject.AddVariation(AName: String; AValue: TJSONNumber);
+begin
+  if not FBitfield.IsBitSet(bfHasSetVariations) then
+      FBitField.SetBit(bfHasSetVariations);
+
+  FVariations.AddPair(CapitalizeFirstLetter(AName), AValue);
+end;
+
+procedure TSKUObject.AddVariation(AName: String; AValue: TJSONBool);
+begin
+  if not FBitfield.IsBitSet(bfHasSetVariations) then
+      FBitField.SetBit(bfHasSetVariations);   
+      
+  FVariations.AddPair(CapitalizeFirstLetter(AName), AValue);
+end;
+
+procedure TSKUObject.AddVariation(AName: String; AValue: Double);
+begin
+  if not FBitfield.IsBitSet(bfHasSetVariations) then
+      FBitField.SetBit(bfHasSetVariations);
+
+  FVariations.AddPair(CapitalizeFirstLetter(AName), TJSONNumber.Create(AValue));
+end;
+
+procedure TSKUObject.AddVariation(AName: String; AValue: Integer);
+begin
+  if not FBitfield.IsBitSet(bfHasSetVariations) then
+      FBitField.SetBit(bfHasSetVariations);
+
+  FVariations.AddPair(CapitalizeFirstLetter(AName), TJSONNumber.Create(AValue));
+end;
+
+procedure TSKUObject.AddVariation(AName: String; AValue: Boolean);
+begin
+  if not FBitfield.IsBitSet(bfHasSetVariations) then
+      FBitField.SetBit(bfHasSetVariations);
+
+  FVariations.AddPair(CapitalizeFirstLetter(AName), TJSONBool.Create(AValue));
+end;
+
 function TSKUObject.CheckRequirements: Boolean;
 begin
   Result := True;
@@ -667,6 +789,38 @@ begin
   FPrice := -1; //REQ
   FSellPrice := -1;    //REQ
   FStockLocalId := -1;
+  FVariations := TJSONObject.Create;
+  FAdditionalStocks := TJSONArray.Create;
+  FExternalID := '';
+  FActive := False;
+  FVolumes := -1.0;
+end;
+
+destructor TSKUObject.Destroy;
+begin
+  if Assigned(FVariations) then
+  begin
+    FreeAndNil(FVariations);
+  end;
+
+  if Assigned(FAdditionalStocks) then
+  begin
+    FreeAndNil(FAdditionalStocks);
+  end;
+
+  inherited;
+end;
+
+function TSKUObject.GetActive: Boolean;
+begin
+  Result := FActive;
+end;
+
+function TSKUObject.GetAdditionalStock(AIdx: Integer): TJSONObject;
+begin
+  Result := nil;
+  if (AIdx < FAdditionalStocks.Count) and (AIdx >= 0) then
+    Result := TJSONObject(FAdditionalStocks[AIdx]);
 end;
 
 function TSKUObject.GetAdditionalTime: Double;
@@ -682,6 +836,11 @@ end;
 function TSKUObject.GetEAN: String;
 begin
   Result := FEAN;
+end;
+
+function TSKUObject.GetExternalId: String;
+begin
+  Result := FExternalID;
 end;
 
 function TSKUObject.GetID: Integer;
@@ -715,11 +874,105 @@ begin
 end;
 
 
-function TSKUObject.SerializeToJSON: TJSONValue;
+function TSKUObject.GetVariation(AName: String): TJSONValue;
 begin
+  if not FVariations.TryGetValue(AName, Result) then
+  begin
+    raise Exception.Create('Could not find variation name.');
+  end;
+end;
+
+function TSKUObject.GetVolumes: Double;
+begin
+  Result := FVolumes;
+end;
+
+procedure TSKUObject.RemoveAdditionalStock(AIdx: Integer);
+var
+  RemovedValue: TJSONValue;
+begin
+  if (AIdx < FAdditionalStocks.Count) and (AIdx >= 0) then
+  begin
+    RemovedValue := FAdditionalStocks.Remove(AIdx);
+    if RemovedValue <> nil then
+      RemovedValue.Free; // Libera o TJSONValue removido da Array.
+  end;
+end;
+
+procedure TSKUObject.RemoveVariation(AName: String);
+var
+  RemovedPair: TJSONPair;
+begin
+  RemovedPair := FVariations.RemovePair(CapitalizeFirstLetter(AName));
+  if RemovedPair <> nil then
+  begin
+    if FVariations.Count = 0 then
+      FBitField.UnsetBit(bfHasSetVariations);
+    RemovedPair.Free;  // Se o par for encontrado e removido, ele é retornado para RemovedPair e liberado da memoria aqui.
+  end;
+
+end;
+
+function TSKUObject.SerializeToJSON: TJSONValue;
+var
+  ResultObject: TJSONObject;
+begin
+  Result := nil;
   if CheckRequirements then
   begin
 
+    ResultObject := TJSONObject.Create;
+
+    if FBitField.IsBitSet(bfhasSetId) then
+      ResultObject.AddPair('id', TJSONNumber.Create(FID));
+
+    if FBitField.IsBitSet(bfhasSetTitle) then
+      ResultObject.AddPair('title', TJSONString.Create(FTitle));
+
+    if FBitField.IsBitSet(bfhasSetPartnerId) then
+      ResultObject.AddPair('partnerId', TJSONString.Create(FPartnerID));
+
+    if FBitField.IsBitSet(bfhasSetEAN) then
+      ResultObject.AddPair('ean', TJSONString.Create(FEAN));
+
+    if FBitField.IsBitSet(bfhasSetAmount) then
+      ResultObject.AddPair('amount', TJSONNumber.Create(FAmount));
+
+    if FBitField.IsBitSet(bfhasSetAdditionalTime) then
+      ResultObject.AddPair('additionalTime', TJSONNumber.Create(FAdditionalTime));
+
+    if FBitField.IsBitSet(bfhasSetPrice) then
+      ResultObject.AddPair('price', TJSONNumber.Create(FPrice));
+
+    if FBitField.IsBitSet(bfhasSetSellPrice) then
+      ResultObject.AddPair('sellPrice', TJSONNumber.Create(FSellPrice));
+
+    if FBitField.IsBitSet(bfhasSetStockLocalId) then
+      ResultObject.AddPair('stockLocalId',TJSONNumber.Create(FStockLocalId));
+
+    if FBitField.IsBitSet(bfhasSetVariations) then
+      ResultObject.AddPair('variations',TJSONValue(FVariations));
+
+    if FBitField.IsBitSet(bfhasSetAdditionalStocks) then
+      ResultObject.AddPair('additionalStocks',TJSONValue(FAdditionalStocks));
+
+    if FBitField.IsBitSet(bfhasSetExternalID) then
+      ResultObject.AddPair('externalId',TJSONString.Create(FExternalID));
+
+    if FBitField.IsBitSet(bfhasSetActive) then
+      ResultObject.AddPair('active',TJSONBool.Create(FActive));
+
+    if FBitField.IsBitSet(bfhasSetVolumes) then
+      ResultObject.AddPair('volumes',TJSONNumber.Create(FVolumes));
+  end;
+end;
+
+procedure TSKUObject.SetActive(const Value: Boolean);
+begin
+  if not FBitField.IsBitSet(bfHasSetActive) then
+  begin
+    FActive := Value;
+    FBitField.SetBit(bfHasSetActive);
   end;
 end;
 
@@ -748,6 +1001,15 @@ begin
   begin
     FEAN := Value;
     FBitfield.SetBit(bfHasSetEAN);
+  end;
+end;
+
+procedure TSKUObject.SetExternalId(const Value: String);
+begin
+  if not FBitField.IsBitSet(bfHasSetExternalID) then
+  begin
+    FExternalID := Value;
+    FBitField.SetBit(bfHasSetExternalID);
   end;
 end;
 
@@ -805,6 +1067,15 @@ begin
   end;
 end;
 
+procedure TSKUObject.SetVolumes(const Value: Double);
+begin
+  if not FBitField.IsBitSet(bfHasSetVolumes) then
+  begin
+    FVolumes := Value;
+    FBitField.SetBit(bfHasSetVolumes);
+  end;
+end;
+
 { TKitComponent }
 
 constructor TKitComponent.Create;
@@ -816,9 +1087,107 @@ begin
   FIsMainComponent := False;
 end;
 
-function TKitComponent.SerializeTOJson: TJSONValue;
+function TKitComponent.GetIsMainComponent: Boolean;
 begin
-  // TO-DO
+  Result := FIsMainComponent;
+end;
+
+function TKitComponent.GetPercentage: Double;
+begin
+  Result := FPercentage;
+end;
+
+function TKitComponent.GetQuantity: Double;
+begin
+  Result := FQuantity;
+end;
+
+function TKitComponent.GetSkuID: string;
+begin
+  Result := FIDSku;
+end;
+
+function TKitComponent.GetStockLocalId: string;
+begin
+  Result := FStockLocalId;
+end;
+
+function TKitComponent.SerializeTOJson: TJSONValue;
+var
+  ObjectBuilding: TJSONObject;
+begin
+  ObjectBuilding := TJSONObject.Create;
+  try
+    if FBitfield.IsBitSet(bfHasSetIdSku) then
+      ObjectBuilding.AddPair('idSku', TJSONString.Create(FIDSku));
+
+    if FBitfield.IsBitSet(bfHasSetStockLocalId) then
+      ObjectBuilding.AddPair('stockLocalId', TJSONString.Create(FStockLocalId));
+
+    if FBitfield.IsBitSet(bfHasSetPercentage) then
+      ObjectBuilding.AddPair('percentage', TJSONNumber.Create(FPercentage));
+
+    if FBitfield.IsBitSet(bfHasSetQuantity) then
+      ObjectBuilding.AddPair('quantity', TJSONNumber.Create(FQuantity));
+      
+    if FBitfield.IsBitSet(bfHasSetIsMainComponent) then
+      ObjectBuilding.AddPair('quantity', TJSONBool.Create(IsMainComponent));
+    
+  finally
+    if ObjectBuilding.Count = 0 then
+    begin
+      ObjectBuilding.Free;
+      Result := nil;
+    end else
+    begin
+      Result := TJSONValue(ObjectBuilding);
+    end;
+  end;
+end;
+
+procedure TKitComponent.SetIsMainComponent(const Value: Boolean);
+begin
+  if not FBitfield.IsBitSet(bfHasSetIsMainComponent) then
+  begin
+    FIsMainComponent := Value;
+    FBitfield.SetBit(bfHasSetIsMainComponent);
+  end;
+end;
+
+procedure TKitComponent.SetPercentage(const Value: Double);
+begin
+  if not FBitfield.IsBitSet(bfHasSetPercentage) then
+  begin
+    FPercentage := Value;
+    FBitfield.SetBit(bfHasSetPercentage);
+  end;
+end;
+
+procedure TKitComponent.SetQuantity(const Value: Double);
+begin
+  if not FBitfield.IsBitSet(bfHasSetQuantity) then
+  begin
+    FQuantity := Value;
+    FBitfield.SetBit(bfHasSetQuantity);
+  end;
+end;
+
+procedure TKitComponent.SetSkuID(const Value: string);
+begin
+  if not FBitfield.IsBitSet(bfHasSetIDSku) then
+  begin
+    FIDSku := Value;
+    FBitfield.SetBit(bfHasSetIDSku);
+  end;
+end;
+
+procedure TKitComponent.SetStockLocalId(const Value: string);
+begin
+  if not FBitfield.IsBitSet(bfHasSetStockLocalId) then
+  begin
+    FStockLocalId := Value;
+    FBitfield.SetBit(bfHasSetStockLocalId);
+  end;
 end;
 
 end.
