@@ -143,6 +143,10 @@
         <DCCReference Include="Core.Bitfield.pas"/>
         <DCCReference Include="Anymarket.Produtos.Builder.pas"/>
         <DCCReference Include="Anymarket.Produtos.Subtypes.pas"/>
+        <DCCReference Include="Anymarket.MasterDetail.Produto.pas">
+            <Form>frmMasterDetailProduto</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

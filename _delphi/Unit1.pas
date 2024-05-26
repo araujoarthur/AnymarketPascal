@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.UITypes, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Anymarket, Core.Utils,
   Vcl.ComCtrls, scControls, System.JSON, Anymarket.MasterDetail.Categoria, Core.UI, Anymarket.MasterDetail,
-  Anymarket.Produtos.Builder, Anymarket.Produtos, Anymarket.Produtos.Subtypes;
+  Anymarket.Produtos.Builder, Anymarket.Produtos, Anymarket.Produtos.Subtypes, Anymarket.MasterDetail.Produto;
 
 type
   TForm1 = class(TForm)
@@ -34,6 +34,7 @@ type
     Button5: TButton;
     Button6: TButton;
     Edit2: TEdit;
+    Button7: TButton;
     procedure FormCreate(Sender: TObject);
     procedure sctCategoriasEnter(Sender: TObject);
     procedure Button1Click(Sender: TObject);
@@ -48,6 +49,7 @@ type
     procedure Button4Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
     procedure Button6Click(Sender: TObject);
+    procedure Button7Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -172,6 +174,14 @@ end;
 procedure TForm1.Button6Click(Sender: TObject);
 begin
   Edit2.Text := CapitalizeFirstLetter(Edit2.Text);
+end;
+
+procedure TForm1.Button7Click(Sender: TObject);
+var
+  Ext: TfrmMasterDetailProduto;
+begin
+  Ext := TfrmMasterDetailProduto.Create(Self, Anym, mdmCreate);
+  Ext.ShowModal;
 end;
 
 procedure TForm1.EditarCategoriaButtonEvent(Sender: TObject);

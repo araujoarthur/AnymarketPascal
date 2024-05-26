@@ -257,10 +257,10 @@ type
       constructor Create(AArray: TWrapperArray<T>);
       function MoveNext: Boolean;
       function GetCurrent:T;
-      
+
       property Current: T read GetCurrent;
     end;
-    
+
   public
     constructor Create;
 
@@ -372,8 +372,7 @@ end;
 
 { TWrapperArray<T>.TWrapperEnumerator }
 
-constructor TWrapperArray<T>.TWrapperEnumerator.Create(
-  AArray: TWrapperArray<T>);
+constructor TWrapperArray<T>.TWrapperEnumerator.Create(AArray: TWrapperArray<T>);
 begin
   FIdx := -1;
   FArray := AArray;

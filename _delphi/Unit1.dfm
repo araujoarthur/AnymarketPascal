@@ -82,8 +82,8 @@ object Form1: TForm1
         OnClick = Button2Click
       end
       object btnLoadCategories: TButton
-        Left = 443
-        Top = 204
+        Left = 499
+        Top = 216
         Width = 132
         Height = 25
         Cancel = True
@@ -156,6 +156,16 @@ object Form1: TForm1
         Height = 23
         TabOrder = 9
         Text = 'Edit1'
+      end
+      object Button7: TButton
+        Left = 272
+        Top = 216
+        Width = 137
+        Height = 25
+        Cancel = True
+        Caption = 'Open Product Modal'
+        TabOrder = 10
+        OnClick = Button7Click
       end
     end
     object sctMarcas: TscTabSheet
