@@ -12,7 +12,9 @@ uses
   Core.Bitfield in 'Core.Bitfield.pas',
   Anymarket.Produtos.Builder in 'Anymarket.Produtos.Builder.pas',
   Anymarket.Produtos.Subtypes in 'Anymarket.Produtos.Subtypes.pas',
-  Anymarket.MasterDetail.Produto in 'Anymarket.MasterDetail.Produto.pas' {frmMasterDetailProduto};
+  Anymarket.MasterDetail.Produto in 'Anymarket.MasterDetail.Produto.pas' {frmMasterDetailProduto},
+  Anymarket.Pedido__DEPRECATED in 'Anymarket.Pedido__DEPRECATED.pas',
+  Anymarket.Binding.Pedido in 'Anymarket.Binding.Pedido.pas';
 
 {$R *.res}
 
