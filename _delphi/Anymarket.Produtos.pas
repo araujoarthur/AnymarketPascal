@@ -234,7 +234,7 @@ begin
     Result.AddPair(
       'origin',
       TJSONValue(TJSONObject.Create(
-        TJSONPair.Create('id', FOriginID)
+        TJSONPair.Create('id', TJSONNumber.Create(FOriginID))
       ))
     );
   end;

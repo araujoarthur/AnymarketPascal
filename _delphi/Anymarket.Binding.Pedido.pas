@@ -54,12 +54,12 @@ type
   TCustomization = class(TPersistent)
   private
     FcustomizationType: string;
-    FcustomizationQuantity: Integer;
+    FcustomizationQuantity: Double;
     FcustomizationPrice: string;
     FcustomizationValue: string;
   public
     property customizationType: string read FcustomizationType write FcustomizationType;
-    property customizationQuantity: Integer read FcustomizationQuantity write FcustomizationQuantity;
+    property customizationQuantity: Double read FcustomizationQuantity write FcustomizationQuantity;
     property customizationPrice: string read FcustomizationPrice write FcustomizationPrice;
     property customizationValue: string read FcustomizationValue write FcustomizationValue;
   end;
@@ -67,11 +67,11 @@ type
   [JsonSerialize(TJsonMemberSerialization.Public)]
   TStock = class(TPersistent)
   private
-    Famount: Integer;
+    Famount: Double;
     FstockLocalId: Integer;
     FstockName: string;
   public
-    property amount: Integer read Famount write Famount;
+    property amount: Double read Famount write Famount;
     property stockLocalId: Integer read FstockLocalId write FstockLocalId;
     property stockName: string read FstockName write FstockName;
   end;
@@ -80,10 +80,10 @@ type
   TQuoteReconciliation = class(TPersistent)
   private
     FquoteId: string;
-    Fprice: Integer;
+    Fprice: Double;
   public
     property quoteId: string read FquoteId write FquoteId;
-    property price: Integer read Fprice write Fprice;
+    property price: Double read Fprice write Fprice;
   end;
 
   [JsonSerialize(TJsonMemberSerialization.Public)]
@@ -251,9 +251,9 @@ type
     FpaymentDetailNormalized: string;
     FpaymentMethodNormalized: string;
     Fstatus: string;
-    Fvalue: Integer;
-    FgatewayFee: Integer;
-    FmarketplaceFee: Integer;
+    Fvalue: Double;
+    FgatewayFee: Double;
+    FmarketplaceFee: Double;
   public
     property installments: Integer read Finstallments write Finstallments;
     property marketplaceId: string read FmarketplaceId write FmarketplaceId;
@@ -261,9 +261,9 @@ type
     property paymentDetailNormalized: string read FpaymentDetailNormalized write FpaymentDetailNormalized;
     property paymentMethodNormalized: string read FpaymentMethodNormalized write FpaymentMethodNormalized;
     property status: string read Fstatus write Fstatus;
-    property value: Integer read Fvalue write Fvalue;
-    property gatewayFee: Integer read FgatewayFee write FgatewayFee;
-    property marketplaceFee: Integer read FmarketplaceFee write FmarketplaceFee;
+    property value: Double read Fvalue write Fvalue;
+    property gatewayFee: Double read FgatewayFee write FgatewayFee;
+    property marketplaceFee: Double read FmarketplaceFee write FmarketplaceFee;
   end;
 
   [JsonSerialize(TJsonMemberSerialization.Public)]
@@ -271,11 +271,11 @@ type
   private
     Fproduct: TProduct;
     Fsku: TSku;
-    Famount: Integer;
-    Funit_: Integer;
-    Fgross: Integer;
-    Ftotal: Integer;
-    Fdiscount: Integer;
+    Famount: Double;
+    Funit_: Double;
+    Fgross: Double;
+    Ftotal: Double;
+    Fdiscount: Double;
     Fshippings: TShippings;
     Fcustomization: TCustomization;
     Fstocks: TArray<TStock>;
@@ -289,24 +289,24 @@ type
   public
     constructor Create;
     destructor Destroy; override;
-    property product: TProduct read Fproduct;
-    property sku: TSku read Fsku;
-    property amount: Integer read Famount write Famount;
+    property product:           TProduct        read Fproduct;
+    property sku:               TSku            read Fsku;
+    property amount:            Double          read Famount                write Famount;
     [JsonName('unit')]
-    property unit_: Integer read Funit_ write Funit_;
-    property gross: Integer read Fgross write Fgross;
-    property total: Integer read Ftotal write Ftotal;
-    property discount: Integer read Fdiscount write Fdiscount;
-    property shippings: TShippings read Fshippings;
-    property customization: TCustomization read Fcustomization;
-    property stocks: TArray<TStock> read Fstocks write Fstocks;
-    property marketPlaceId: string read FmarketPlaceId write FmarketPlaceId;
-    property orderItemId: string read ForderItemId write ForderItemId;
-    property idInMarketPlace: string read FidInMarketPlace write FidInMarketPlace;
-    property officialStoreId: string read FofficialStoreId write FofficialStoreId;
-    property officialStoreName: string read FofficialStoreName write FofficialStoreName;
-    property listingType: string read FlistingType write FlistingType;
-    property freeShipping: Boolean read FfreeShipping write FfreeShipping;
+    property unit_:             Double          read Funit_                 write Funit_;
+    property gross:             Double          read Fgross                 write Fgross;
+    property total:             Double          read Ftotal                 write Ftotal;
+    property discount:          Double          read Fdiscount              write Fdiscount;
+    property shippings:         TShippings      read Fshippings;
+    property customization:     TCustomization  read Fcustomization;
+    property stocks:            TArray<TStock>  read Fstocks                write Fstocks;
+    property marketPlaceId:     string          read FmarketPlaceId         write FmarketPlaceId;
+    property orderItemId:       string          read ForderItemId           write ForderItemId;
+    property idInMarketPlace:   string          read FidInMarketPlace       write FidInMarketPlace;
+    property officialStoreId:   string          read FofficialStoreId       write FofficialStoreId;
+    property officialStoreName: string          read FofficialStoreName     write FofficialStoreName;
+    property listingType:       string          read FlistingType           write FlistingType;
+    property freeShipping:      Boolean         read FfreeShipping          write FfreeShipping;
   end;
 
   [JsonSerialize(TJsonMemberSerialization.Public)]
@@ -381,7 +381,7 @@ type
   end;
 
   [JsonSerialize(TJsonMemberSerialization.Public)]
-  AnyPedido = class(TPersistent)
+  TAnyPedido = class(TPersistent)
   private
     Fid: Integer;
     FaccountName: string;
@@ -404,12 +404,12 @@ type
     FdocumentPaymentInstitution: string;
     Ffulfillment: Boolean;
     FquoteReconciliation: TQuoteReconciliation;
-    Fdiscount: Integer;
-    Ffreight: Integer;
-    FsellerFreight: Integer;
-    FinterestValue: Integer;
-    Fgross: Integer;
-    Ftotal: Integer;
+    Fdiscount: Double;
+    Ffreight: Double;
+    FsellerFreight: Double;
+    FinterestValue: Double;
+    Fgross: Double;
+    Ftotal: Double;
     FmarketPlaceUrl: string;
     FmarketPlaceShipmentStatus: string;
     Finvoice: TInvoice;
@@ -449,12 +449,12 @@ type
     property documentPaymentInstitution: string read FdocumentPaymentInstitution write FdocumentPaymentInstitution;
     property fulfillment: Boolean read Ffulfillment write Ffulfillment;
     property quoteReconciliation: TQuoteReconciliation read FquoteReconciliation;
-    property discount: Integer read Fdiscount write Fdiscount;
-    property freight: Integer read Ffreight write Ffreight;
-    property sellerFreight: Integer read FsellerFreight write FsellerFreight;
-    property interestValue: Integer read FinterestValue write FinterestValue;
-    property gross: Integer read Fgross write Fgross;
-    property total: Integer read Ftotal write Ftotal;
+    property discount: Double read Fdiscount write Fdiscount;
+    property freight: Double read Ffreight write Ffreight;
+    property sellerFreight: Double read FsellerFreight write FsellerFreight;
+    property interestValue: Double read FinterestValue write FinterestValue;
+    property gross: Double read Fgross write Fgross;
+    property total: Double read Ftotal write Ftotal;
     property marketPlaceUrl: string read FmarketPlaceUrl write FmarketPlaceUrl;
     property marketPlaceShipmentStatus: string read FmarketPlaceShipmentStatus write FmarketPlaceShipmentStatus;
     property invoice: TInvoice read Finvoice;
@@ -475,7 +475,7 @@ type
 implementation
 
 uses
-  System.SysUtils, System.Generics.Collections;
+  System.SysUtils, System.Generics.Collections,Core.Utils;
 
 constructor TItem.Create;
 begin
@@ -492,11 +492,16 @@ begin
   FreeAndNil(Fsku);
   FreeAndNil(Fshippings);
   FreeAndNil(Fcustomization);
+  {$IF CompilerVersion >= 36}
   TArray.FreeValues<TStock>(Fstocks);
+  {$ELSE}
+  // Treat for Delphi before FreeValeus were available.
+  TGenericArrayLiberator.FreeVals<TStock>(FStocks);
+  {$ENDIF}
   inherited Destroy;
 end;
 
-constructor AnyPedido.Create;
+constructor TAnyPedido.Create;
 begin
   inherited Create;
   FquoteReconciliation := TQuoteReconciliation.Create;
@@ -510,7 +515,7 @@ begin
   Fmetadata := TMetadata.Create;
 end;
 
-destructor AnyPedido.Destroy;
+destructor TAnyPedido.Destroy;
 begin
   FreeAndNil(FquoteReconciliation);
   FreeAndNil(Finvoice);
@@ -518,8 +523,14 @@ begin
   FreeAndNil(FbillingAddress);
   FreeAndNil(FanymarketAddress);
   FreeAndNil(Fbuyer);
+  {$IF CompilerVersion >= 36}
   TArray.FreeValues<TPayment>(Fpayments);
   TArray.FreeValues<TItem>(Fitems);
+  {$ELSE}
+  // Treat for Delphi before FreeValeus were available.
+  TGenericArrayLiberator.FreeVals<TPayment>(FPayments);
+  TGenericArrayLiberator.FreeVals<TItem>(Fitems);
+  {$ENDIF}
   FreeAndNil(Ftracking);
   FreeAndNil(Fpickup);
   FreeAndNil(Fmetadata);
@@ -544,6 +555,6 @@ initialization
   RegisterClass(TTracking);
   RegisterClass(TPickup);
   RegisterClass(TMetadata);
-  RegisterClass(AnyPedido);
+  RegisterClass(TAnyPedido);
 
 end.

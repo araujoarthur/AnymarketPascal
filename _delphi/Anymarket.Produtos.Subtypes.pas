@@ -819,7 +819,7 @@ function TSKUObject.GetAdditionalStock(AIdx: Integer): TJSONObject;
 begin
   Result := nil;
   if (AIdx < FAdditionalStocks.Count) and (AIdx >= 0) then
-    Result := TJSONObject(FAdditionalStocks[AIdx]);
+    Result := TJSONObject(FAdditionalStocks.Items[AIdx]);
 end;
 
 function TSKUObject.GetAdditionalTime: Double;

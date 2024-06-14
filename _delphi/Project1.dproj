@@ -148,8 +148,11 @@
             <Form>frmMasterDetailProduto</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="Anymarket.Pedido__DEPRECATED.pas"/>
         <DCCReference Include="Anymarket.Binding.Pedido.pas"/>
+        <DCCReference Include="Anymarket.Feed.pas"/>
+        <DCCReference Include="Anymarket.Constants.pas"/>
+        <DCCReference Include="Anymarket.Utils.pas"/>
+        <DCCReference Include="Anymarket.Bridge.Types.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

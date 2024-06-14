@@ -3,7 +3,7 @@ object Form1: TForm1
   Top = 0
   Caption = 'Anymarket Integration Test Suit'
   ClientHeight = 584
-  ClientWidth = 918
+  ClientWidth = 1020
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -15,245 +15,324 @@ object Form1: TForm1
   TextHeight = 15
   object memoTestResults: TMemo
     Left = 0
-    Top = 292
-    Width = 918
-    Height = 292
+    Top = 312
+    Width = 1020
+    Height = 272
     Align = alBottom
     TabOrder = 0
   end
-  object pgTests: TscPageControl
-    Left = 0
-    Top = 0
-    Width = 918
-    Height = 290
-    ActivePage = sctCategorias
-    Align = alTop
-    TabOrder = 1
-    TabGlowEffect.Enabled = False
-    TabGlowEffect.Color = clHighlight
-    TabGlowEffect.AlphaValue = 255
-    TabGlowEffect.GlowSize = 7
-    TabGlowEffect.Offset = 0
-    TabGlowEffect.Intensive = True
-    TabGlowEffect.StyleColors = True
-    TabGlowEffect.HotColor = clNone
-    TabGlowEffect.PressedColor = clNone
-    TabGlowEffect.FocusedColor = clNone
-    TabGlowEffect.PressedGlowSize = 7
-    TabGlowEffect.PressedAlphaValue = 255
-    TabGlowEffect.States = [scsHot, scsPressed, scsFocused]
-    TabImageGlow = True
-    HideBorder = False
-    HideTabs = False
-    TabsOffset = 0
-    TabsInCenter = False
-    ShowButtonsDivider = True
-    TabsWallpaperIndex = -1
-    ShowInActiveTab = True
-    ShowFocusRect = True
-    MouseWheelSupport = False
-    TabExtededDraw = False
-    TabSpacing = 1
-    FreeOnClose = False
-    ShowCloseButtons = False
-    object sctCategorias: TscTabSheet
-      Caption = 'Categorias'
-      OnEnter = sctCategoriasEnter
-      StyleKind = sctsTabSheet
-      WallpaperIndex = -1
-      CustomBackgroundImageIndex = -1
-      DrawTabsWallpaper = False
-      object Button1: TButton
-        Left = 200
-        Top = 18
-        Width = 105
-        Height = 25
-        Caption = 'Obter Categorias'
-        TabOrder = 0
-        OnClick = Button1Click
-      end
-      object Button2: TButton
-        Left = 200
-        Top = 49
-        Width = 75
-        Height = 25
-        Caption = 'Button2'
-        TabOrder = 1
-        OnClick = Button2Click
-      end
-      object btnLoadCategories: TButton
-        Left = 499
-        Top = 216
-        Width = 132
-        Height = 25
-        Cancel = True
-        Caption = 'Carregar Categorias'
-        TabOrder = 2
-        OnClick = CarregarCategoriasButtonEvent
-      end
-      object btnAddCategory: TButton
-        Left = 637
-        Top = 38
-        Width = 75
-        Height = 25
-        Cancel = True
-        Caption = 'Add'
-        TabOrder = 3
-        OnClick = AdicionarCategoriaButtonEvent
-      end
-      object ComboBox1: TComboBox
-        Left = 344
-        Top = 21
-        Width = 145
-        Height = 23
-        TabOrder = 4
-        Text = 'ComboBox1'
-      end
-      object ListBox1: TListBox
-        Left = 637
-        Top = 69
-        Width = 269
-        Height = 171
-        ItemHeight = 15
-        TabOrder = 5
-        OnClick = ListBox1Click
-      end
-      object btnEditaCategoria: TButton
-        Left = 719
-        Top = 38
-        Width = 75
-        Height = 25
-        Cancel = True
-        Caption = 'Editar'
-        Enabled = False
-        TabOrder = 6
-        OnClick = EditarCategoriaButtonEvent
-      end
-      object btnRemoverCategoria: TButton
-        Left = 800
-        Top = 38
-        Width = 76
-        Height = 25
-        Cancel = True
-        Caption = 'Remover'
-        Enabled = False
-        TabOrder = 7
-        OnClick = RemoverCategoriaButtonEvent
-      end
-      object Button3: TButton
-        Left = 224
-        Top = 96
-        Width = 96
-        Height = 43
-        Caption = 'Button3'
-        TabOrder = 8
-        OnClick = Button3Click
-      end
-      object Edit1: TEdit
-        Left = 360
-        Top = 108
-        Width = 152
-        Height = 23
-        TabOrder = 9
-        Text = 'Edit1'
-      end
-      object Button7: TButton
-        Left = 272
-        Top = 216
-        Width = 137
-        Height = 25
-        Cancel = True
-        Caption = 'Open Product Modal'
-        TabOrder = 10
-        OnClick = Button7Click
-      end
-    end
-    object sctMarcas: TscTabSheet
-      Caption = 'Marcas'
-      StyleKind = sctsFormBackground
-      WallpaperIndex = -1
-      CustomBackgroundImageIndex = -1
-      DrawTabsWallpaper = False
-      object ListBox2: TListBox
-        Left = 72
-        Top = 3
-        Width = 208
-        Height = 254
-        ItemHeight = 15
-        TabOrder = 0
-      end
-      object btnCarregarMarcas: TButton
-        Left = 287
-        Top = 3
-        Width = 120
-        Height = 25
-        Caption = 'Carregar Marcas'
-        TabOrder = 1
-        OnClick = CarregarMarcasButtonEvent
-      end
-    end
-    object sctProdutos: TscTabSheet
-      Caption = 'Produtos'
-      StyleKind = sctsTabSheet
-      WallpaperIndex = -1
-      CustomBackgroundImageIndex = -1
-      DrawTabsWallpaper = False
-    end
-    object sctPreco: TscTabSheet
-      Caption = 'Pre'#231'o'
-      StyleKind = sctsTabSheet
-      WallpaperIndex = -1
-      CustomBackgroundImageIndex = -1
-      DrawTabsWallpaper = False
-    end
-    object sctEstoque: TscTabSheet
-      Caption = 'Estoque'
-      StyleKind = sctsTabSheet
-      WallpaperIndex = -1
-      CustomBackgroundImageIndex = -1
-      DrawTabsWallpaper = False
-    end
-    object sctPedidos: TscTabSheet
-      Caption = 'Pedidos'
-      StyleKind = sctsTabSheet
-      WallpaperIndex = -1
-      CustomBackgroundImageIndex = -1
-      DrawTabsWallpaper = False
-    end
-  end
-  object Button4: TButton
-    Left = 519
-    Top = 163
-    Width = 75
+  object productsTestBuilderAndSerializer: TButton
+    Left = 733
+    Top = 177
+    Width = 281
     Height = 25
-    Caption = 'Button4'
-    TabOrder = 2
-    OnClick = Button4Click
+    Caption = '[PRODUTOS] Test Product Builder and Serializer'
+    TabOrder = 1
+    OnClick = productsTestBuilderAndSerializerClick
   end
   object Button5: TButton
-    Left = 835
-    Top = 551
-    Width = 75
+    Left = 446
+    Top = 171
+    Width = 281
     Height = 25
-    Caption = 'Button5'
-    TabOrder = 3
+    Caption = '[UTILS] Testa Wrapper'
+    TabOrder = 2
     OnClick = Button5Click
   end
   object Button6: TButton
-    Left = 135
-    Top = 242
-    Width = 75
+    Left = 446
+    Top = 18
+    Width = 281
     Height = 25
-    Caption = 'Button6'
-    TabOrder = 4
+    Caption = '[UTILS] Capitalize First Letter Function'
+    TabOrder = 3
     OnClick = Button6Click
   end
-  object Edit2: TEdit
-    Left = 8
-    Top = 243
-    Width = 121
+  object utilsCapitalizableEdit: TEdit
+    Left = 288
+    Top = 19
+    Width = 152
     Height = 23
+    TabOrder = 4
+    Text = 'utilsCapitalizableEdit'
+  end
+  object ordersObterPedidos: TButton
+    Left = 8
+    Top = 47
+    Width = 225
+    Height = 25
+    Caption = '[PEDIDOS] Obter Pedidos (VAR GLOBAL)'
     TabOrder = 5
-    Text = 'Edit2'
+    OnClick = ordersObterPedidosClick
+  end
+  object ordersNextPage: TButton
+    Left = 8
+    Top = 78
+    Width = 225
+    Height = 25
+    Caption = '[PEDIDOS] Next Page (VAR GLOBAL)'
+    Enabled = False
+    TabOrder = 6
+    OnClick = ordersNextPageClick
+  end
+  object ordersFiltrarPedidos: TButton
+    Left = 8
+    Top = 16
+    Width = 225
+    Height = 25
+    Caption = '[PEDIDOS] Teste Filtra Pedidos'
+    TabOrder = 7
+    OnClick = ordersFiltrarPedidosClick
+  end
+  object categoryEditaCategoria: TButton
+    Left = 815
+    Top = 18
+    Width = 75
+    Height = 25
+    Cancel = True
+    Caption = 'Editar'
+    Enabled = False
+    TabOrder = 8
+    OnClick = EditarCategoriaButtonEvent
+  end
+  object categoryRemoverCategoria: TButton
+    Left = 896
+    Top = 18
+    Width = 76
+    Height = 25
+    Cancel = True
+    Caption = 'Remover'
+    Enabled = False
+    TabOrder = 9
+    OnClick = RemoverCategoriaButtonEvent
+  end
+  object ListBox1: TListBox
+    Left = 733
+    Top = 49
+    Width = 281
+    Height = 116
+    ItemHeight = 15
+    TabOrder = 10
+    OnClick = ListBox1Click
+  end
+  object categoryAddCategory: TButton
+    Left = 733
+    Top = 18
+    Width = 75
+    Height = 25
+    Cancel = True
+    Caption = 'Add'
+    TabOrder = 11
+    OnClick = AdicionarCategoriaButtonEvent
+  end
+  object Button1: TButton
+    Left = 446
+    Top = 49
+    Width = 281
+    Height = 23
+    Caption = '[CATEGORIAS] Obter Categorias para ComboBox'
+    TabOrder = 12
+    OnClick = Button1Click
+  end
+  object categoryCategorias: TComboBox
+    Left = 288
+    Top = 48
+    Width = 152
+    Height = 23
+    TabOrder = 13
+    Text = 'categoryCategorias'
+  end
+  object categoryLoadCategories: TButton
+    Left = 446
+    Top = 140
+    Width = 281
+    Height = 25
+    Cancel = True
+    Caption = '[CATEGORIAS] Carregar Categorias em ListBox'
+    TabOrder = 14
+    OnClick = CarregarCategoriasButtonEvent
+  end
+  object Button3: TButton
+    Left = 446
+    Top = 78
+    Width = 281
+    Height = 25
+    Caption = '[CATEGORIAS] Checa Data Object'
+    TabOrder = 15
+    OnClick = Button3Click
+  end
+  object modalsOpenProductModal: TButton
+    Left = 733
+    Top = 208
+    Width = 281
+    Height = 25
+    Cancel = True
+    Caption = '[MODAIS] Open Product Modal'
+    TabOrder = 16
+    OnClick = modalsOpenProductModalClick
+  end
+  object feedTestObtaining: TButton
+    Left = 733
+    Top = 239
+    Width = 281
+    Height = 25
+    Caption = '[FEED] Test Feed Obtaining'
+    TabOrder = 17
+    OnClick = feedTestObtainingClick
+  end
+  object categoryObtainCategoryToMemo: TButton
+    Left = 446
+    Top = 109
+    Width = 281
+    Height = 25
+    Caption = '[CATEGORIAS] Obter Categorias para Memo'
+    TabOrder = 18
+    OnClick = categoryObtainCategoryToMemoClick
+  end
+  object productsSearchableProduct: TEdit
+    Left = 288
+    Top = 77
+    Width = 152
+    Height = 23
+    TabOrder = 19
+    Text = 'productsSearchableProduct'
+  end
+  object ordersUpdateOrderId: TEdit
+    Left = 8
+    Top = 125
+    Width = 225
+    Height = 23
+    TabOrder = 20
+    Text = 'ordersUpdateOrderId'
+  end
+  object ordersAtualizaPago: TButton
+    Left = 8
+    Top = 154
+    Width = 225
+    Height = 25
+    Caption = '[PEDIDOS] Atualizar para Pago'
+    TabOrder = 21
+    OnClick = ordersAtualizaPagoClick
+  end
+  object ordersAtualizaFaturado: TButton
+    Left = 8
+    Top = 185
+    Width = 225
+    Height = 25
+    Caption = '[PEDIDOS] Atualizar para Faturado'
+    TabOrder = 22
+    OnClick = ordersAtualizaFaturadoClick
+  end
+  object ordersAtualizaEnviado: TButton
+    Left = 8
+    Top = 216
+    Width = 225
+    Height = 25
+    Caption = '[PEDIDOS] Atualizar para Enviado'
+    TabOrder = 23
+    OnClick = ordersAtualizaEnviadoClick
+  end
+  object ordersAtualizaCancelado: TButton
+    Left = 8
+    Top = 247
+    Width = 225
+    Height = 25
+    Caption = '[PEDIDOS] Atualizar para Cancelado'
+    TabOrder = 24
+    OnClick = ordersAtualizaCanceladoClick
+  end
+  object Button4: TButton
+    Left = 256
+    Top = 247
+    Width = 169
+    Height = 25
+    Caption = '[PEDIDOS] Busca Cancelados'
+    TabOrder = 25
+    OnClick = Button4Click
+  end
+  object Button7: TButton
+    Left = 256
+    Top = 216
+    Width = 169
+    Height = 25
+    Caption = '[PEDIDOS] Busca Pendentes'
+    TabOrder = 26
+    OnClick = Button7Click
+  end
+  object Button8: TButton
+    Left = 256
+    Top = 185
+    Width = 169
+    Height = 25
+    Caption = '[PEDIDOS] Busca Pagos'
+    TabOrder = 27
+    OnClick = Button8Click
+  end
+  object ordersDetalhesPedido: TButton
+    Left = 239
+    Top = 124
+    Width = 186
+    Height = 25
+    Caption = '[PEDIDOS] Detalhes do Pedido'
+    TabOrder = 28
+    OnClick = ordersDetalhesPedidoClick
+  end
+  object Button2: TButton
+    Left = 976
+    Top = 318
+    Width = 36
+    Height = 14
+    Caption = 'Clear'
+    Font.Charset = OEM_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -8
+    Font.Name = 'Terminal'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 29
+    OnClick = Button2Click
+  end
+  object ordersAtualizaConcluido: TButton
+    Left = 8
+    Top = 278
+    Width = 225
+    Height = 25
+    Caption = '[PEDIDOS] Atualizar para Concluido'
+    TabOrder = 30
+    OnClick = ordersAtualizaConcluidoClick
+  end
+  object Button9: TButton
+    Left = 256
+    Top = 278
+    Width = 169
+    Height = 25
+    Caption = '[PEDIDOS] Buscar Concluidos'
+    TabOrder = 31
+    OnClick = Button9Click
+  end
+  object Button10: TButton
+    Left = 431
+    Top = 278
+    Width = 169
+    Height = 25
+    Caption = '[PEDIDOS] Buscar Enviados'
+    TabOrder = 32
+    OnClick = Button10Click
+  end
+  object odersEnviaXML: TButton
+    Left = 431
+    Top = 247
+    Width = 169
+    Height = 25
+    Caption = '[PEDIDOS] Enviar XML'
+    TabOrder = 33
+    OnClick = odersEnviaXMLClick
+  end
+  object FileOpenDialog1: TFileOpenDialog
+    FavoriteLinks = <>
+    FileTypes = <>
+    Options = []
+    Left = 632
+    Top = 312
   end
 end

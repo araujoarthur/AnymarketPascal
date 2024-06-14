@@ -27,3 +27,15 @@ Endereço que abriga o arquivo `.YAML` e seu correspondente convertido para `.JS
 ### _uml
 
 Contém a representação dos fluxos elaborados pela fornecedora da API e adaptados ao processo realizado pelo wrapper.
+
+---
+
+## Estrutura Padrão de Resposta Processada
+
+```json
+{
+	"data": Object || Array of Object, /**/
+	"response_code": Integer,
+  	"status": string; /*success, success - no content, failed*/
+}
+```

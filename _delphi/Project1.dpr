@@ -13,8 +13,11 @@ uses
   Anymarket.Produtos.Builder in 'Anymarket.Produtos.Builder.pas',
   Anymarket.Produtos.Subtypes in 'Anymarket.Produtos.Subtypes.pas',
   Anymarket.MasterDetail.Produto in 'Anymarket.MasterDetail.Produto.pas' {frmMasterDetailProduto},
-  Anymarket.Pedido__DEPRECATED in 'Anymarket.Pedido__DEPRECATED.pas',
-  Anymarket.Binding.Pedido in 'Anymarket.Binding.Pedido.pas';
+  Anymarket.Binding.Pedido in 'Anymarket.Binding.Pedido.pas',
+  Anymarket.Feed in 'Anymarket.Feed.pas',
+  Anymarket.Constants in 'Anymarket.Constants.pas',
+  Anymarket.Utils in 'Anymarket.Utils.pas',
+  Anymarket.Bridge.Types in 'Anymarket.Bridge.Types.pas';
 
 {$R *.res}
 

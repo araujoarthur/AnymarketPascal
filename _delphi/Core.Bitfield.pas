@@ -7,7 +7,9 @@ uses Generics.Collections;
 type
   TBitfield32 = record
     BF: FixedUInt;
+    {$IF CompilerVersion >= 36}
     class operator Initialize(out Dest: TBitField32);
+    {$ENDIF}
 
     function ExtractBit(ABit: FixedUInt): FixedUInt; inline;
     function IsBitSet(ABit: FixedUInt): Boolean;
@@ -33,10 +35,12 @@ begin
   Result := ExtractBit(ABit);
 end;
 
+{$IF CompilerVersion >= 36}
 class operator TBitfield32.Initialize(out Dest: TBitField32);
 begin
   Dest.BF := FixedUInt(0);
 end;
+{$ENDIF}
 
 function TBitfield32.IsBitSet(ABit: FixedUInt): Boolean;
 begin
